@@ -1,4 +1,56 @@
-### Commit Types
+# Zubi
+
+A brief description of your project.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Branches](#branches)
+- [Committing](#committing)
+- [File Structure](#file-structure)
+
+
+## Introduction
+
+This document serves as a comprehensive guide for the team to document new features, describe their functionality, and provide instructions for usage or implementation. It ensures consistency and clarity across the project, making it easier for team members to contribute, understand the purpose of changes, and collaborate effectively.
+
+Each section of this document outlines important practices for:
+
+- Writing clear and concise commit messages.
+- Naming branches according to convention.
+- Maintaining a standardized project file structure.
+
+Following these guidelines will help streamline the development process, improve code quality, and ensure smooth integration of features.
+
+## Branches
+
+To keep the codebase organized and ensure clear understanding, we follow these branch naming conventions:
+
+### Feature Branches:
+- `feature/<short-description>` – Use this for adding new features.
+  - Example: `feature/user-authentication`
+
+### Bugfix Branches:
+- `bugfix/<short-description>` – Use this for fixing bugs.
+  - Example: `bugfix/fix-login-error`
+
+### Hotfix Branches:
+- `hotfix/<short-description>` – For urgent fixes that need to go directly into production.
+  - Example: `hotfix/critical-security-patch`
+
+### Other Branch Types:
+- `chore/<short-description>` – For miscellaneous tasks that don't fit into features or bugfixes, such as updating dependencies or cleanup.
+  - Example: `chore/update-dependencies`
+- `test/<short-description>` – For branches specifically focused on testing.
+  - Example: `test/integration-testing`
+
+### Guidelines:
+- Branch names should be all lowercase.
+- Use hyphens (`-`) to separate words, not spaces or underscores.
+- Keep branch names descriptive but concise.
+
+
+## Committing
 
 1. **feat**: A new feature for the user.
    - Example: `feat(auth): add login functionality`
@@ -31,4 +83,31 @@
     - Example: `chore(deps): bump eslint version`
 
 11. **revert**: Reverts a previous commit.
+
+
+## File Structure
+
+The following is the general file structure of the project. Each folder and file serves a specific purpose:
+
+/
+├── .github/
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   └── workflows/
+├── src/
+|   ├── controllers/
+│   ├── database/
+│   ├── models/
+│   ├── routes/
+│   ├── testing/
+│   ├── utils/
+│   ├── server.ts
+│   └── index.ts
+├── tests/
+├── public/
+├── dist/
+├── node_modules/
+├── package.json
+├── tsconfig.json
+└── README.md
+
 
