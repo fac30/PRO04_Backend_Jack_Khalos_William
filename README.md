@@ -6,7 +6,6 @@ A brief description of your project.
 
 - [Introduction](#introduction)
 - [Branches](#branches)
-- [Running Server](#Server)
 - [Committing](#committing)
 - [File Structure](#file-structure)
 
@@ -22,17 +21,8 @@ Each section of this document outlines important practices for:
 
 Following these guidelines will help streamline the development process, improve code quality, and ensure smooth integration of features.
 
-
-## Server
-
-* To run a particular file, using `npm runfile` and then the path to the file you want to run from the root dir.
-
-* To run the server.ts file, use `npm server`
-
-* To compile, use `npm compile`
-
-
 ## Branches
+
 To keep the codebase organized and ensure clear understanding, we follow these branch naming conventions:
 
 ### Feature Branches:
