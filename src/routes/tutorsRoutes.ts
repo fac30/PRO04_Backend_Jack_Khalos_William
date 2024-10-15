@@ -1,15 +1,8 @@
-import getTutorById from "../models/getTutor";
-import { Response, Request } from "express";
+import { getTutorController } from "../controllers/tutorsControllers";
+import { Router } from "express";
 
-const get = (req: Request, res: Response) => {
-  const { id } = req.params; // Extract the ID from the URL parameters
-  const tutor = getTutorById(Number(id)); // Convert to number if necessary
+const router = Router();
 
-  if (tutor) {
-    res.json(tutor); // Send the tutor object as a JSON response
-  } else {
-    res.status(404).json({ error: "Tutor not found" }); // Handle not found case
-  }
-};
+router.get("/", getTutorController);
 
-export { get };
+export default router;
