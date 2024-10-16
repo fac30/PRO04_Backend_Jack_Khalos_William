@@ -2,10 +2,12 @@
   "name": "pro04_backend_jack_khalos_william",
   "version": "1.0.0",
   "main": "./src/server.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
-    "compile": "npx tsc",
+    "build": "npx tsc",
+    "start": "node dist/server.js",
     "server": "npx tsx watch ./src/server.ts",
     "runfile": "npx nodemon --exec tsx"
   },

@@ -10,8 +10,6 @@ app.get("/", (req, res) => {
 
 app.use("/tutors", tutorsRoutes);
 
-app.listen(port, () => {
-  console.log(`Server started on port: ${port}`);
-});
-
-export default app;
+app.listen(port,()=>{
+    console.log(`Server started on port: ${port}`)
+})
