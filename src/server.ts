@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/tutors", tutorsRoutes);
+app.use("/tutors", tutorsRoutes);
 
 app.listen(port, () => {
   console.log(`Server started on port: ${port}`);
