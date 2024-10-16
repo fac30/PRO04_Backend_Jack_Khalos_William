@@ -10,5 +10,5 @@ const schema = readFileSync(schemaPath, "utf-8");
 zubiDB.exec(schema);
 
 const data = zubiDB.prepare("SELECT * FROM tutors").all();
-console.log(data);
+// console.log(data);
 export default zubiDB;

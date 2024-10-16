@@ -6,9 +6,10 @@ A brief description of your project.
 
 - [Introduction](#introduction)
 - [Branches](#branches)
-- [Running Server](#Server)
+- [Running Server](#server)
 - [Committing](#committing)
 - [File Structure](#file-structure)
+- [Endpoints](#endpoints)
 
 ## Introduction
 
@@ -22,17 +23,16 @@ Each section of this document outlines important practices for:
 
 Following these guidelines will help streamline the development process, improve code quality, and ensure smooth integration of features.
 
-
 ## Server
 
-* To run a particular file, using `npm runfile` and then the path to the file you want to run from the root dir.
+- To run a particular file, using npm runfile and then the path to the file you want to run from the root dir.
 
-* To run the server.ts file, use `npm server`
+- To run the server.ts file, use npm server
 
-* To compile, use `npm compile`
-
+- To compile, use npm compile
 
 ## Branches
+
 To keep the codebase organized and ensure clear understanding, we follow these branch naming conventions:
 
 ### Feature Branches:
@@ -107,10 +107,95 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 
 11. **revert**: Reverts a previous commit.
 
+## Endpoints
+
+### Get All Tutors
+
+- Endpoint: GET /tutors
+- Example request: `http://localhost:3000/tutors`
+- Description: Fetches a list of all available tutors.
+- Response:
+
+  - 200 OK: Returns an array of tutor objects.
+  - 404 Not Found: If no tutors are found.
+
+  - Example response:
+
+```ts
+[
+  {
+    id: 1,
+    created_at: "2024-10-15 15:50:45",
+    full_name: "John Doe",
+    email: "john.doe@example.com",
+    address: "123 Tutor Lane",
+    postal_code: "12345",
+    phone_number: "07700900001",
+    availability: null,
+    fk_subject_id: null,
+    fk_tutortype_id: null,
+  },
+  {
+    id: 2,
+    created_at: "2024-10-15 15:50:45",
+    full_name: "Jane Smith",
+    email: "jane.smith@example.com",
+    address: "456 Tutor St",
+    postal_code: "54321",
+    phone_number: "07700900002",
+    availability: null,
+    fk_subject_id: null,
+    fk_tutortype_id: null,
+  },
+  {
+    id: 3,
+    created_at: "2024-10-15 15:50:45",
+    full_name: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    address: "789 Tutor Blvd",
+    postal_code: "11223",
+    phone_number: "07700900003",
+    availability: null,
+    fk_subject_id: null,
+    fk_tutortype_id: null,
+  },
+];
+```
+
+### Get Tutor By ID
+
+- Endpoint: GET /tutors (with id query)
+- Example request: `http://localhost:3000/tutors?id=2`
+- Description: Fetches details of a specific tutor by their unique ID.
+- Parameters:
+  - id (path parameter): The ID of the tutor.
+- Response:
+
+  - 200 OK: Returns the tutor object if found.
+  - 404 Not Found: If the tutor with the given ID does not exist.
+
+- Example response:
+
+```ts
+{
+	"id": 2,
+	"created_at": "2024-10-15 15:50:45",
+	"full_name": "Jane Smith",
+	"email": "jane.smith@example.com",
+	"address": "456 Tutor St",
+	"postal_code": "54321",
+	"phone_number": "07700900002",
+	"availability": null,
+	"fk_subject_id": null,
+	"fk_tutortype_id": null
+}
+```
+
 ## File Structure
 
 The following is the general file structure of the project. Each folder and file serves a specific purpose:
 
+```
 /
 ├── .github/
 │ ├── PULL_REQUEST_TEMPLATE.md
@@ -131,3 +216,4 @@ The following is the general file structure of the project. Each folder and file
 ├── package.json
 ├── tsconfig.json
 └── README.md
+```
