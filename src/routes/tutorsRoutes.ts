@@ -1,7 +1,7 @@
 import {
   getAllTutorsController,
   getTutorbyIdController,
-} from "../controllers/tutorsControllers";
+} from "../controllers/tutorsControllers.js";
 import { Router } from "express";
 
 const router = Router();
