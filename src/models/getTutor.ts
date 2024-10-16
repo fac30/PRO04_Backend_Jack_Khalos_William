@@ -1,4 +1,4 @@
-import zubiDB from "../database/db";
+import zubiDB from "../database/db.js";
 
 // console.log(zubiDB);
 
