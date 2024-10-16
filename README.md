@@ -112,6 +112,7 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 ### Get All Tutors
 
 - Endpoint: GET /tutors
+- Example request: `http://localhost:3000/tutors`
 - Description: Fetches a list of all available tutors.
 - Response:
 
@@ -163,7 +164,8 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 
 ### Get Tutor By ID
 
-- Endpoint: GET /tutors/:id
+- Endpoint: GET /tutors (with id query)
+- Example request: `http://localhost:3000/tutors?id=2`
 - Description: Fetches details of a specific tutor by their unique ID.
 - Parameters:
   - id (path parameter): The ID of the tutor.
@@ -173,6 +175,21 @@ To keep the codebase organized and ensure clear understanding, we follow these b
   - 404 Not Found: If the tutor with the given ID does not exist.
 
 - Example response:
+
+```ts
+{
+	"id": 2,
+	"created_at": "2024-10-15 15:50:45",
+	"full_name": "Jane Smith",
+	"email": "jane.smith@example.com",
+	"address": "456 Tutor St",
+	"postal_code": "54321",
+	"phone_number": "07700900002",
+	"availability": null,
+	"fk_subject_id": null,
+	"fk_tutortype_id": null
+}
+```
 
 ## File Structure
 

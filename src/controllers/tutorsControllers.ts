@@ -11,7 +11,7 @@ const getAllTutorsController = (req: Request, res: Response) => {
 };
 
 const getTutorbyIdController = (req: Request, res: Response) => {
-  const id: number = Number(req.params);
+  const id: number = Number(req.query.id);
   const tutor = getTutorById(id);
 
   if (tutor) {

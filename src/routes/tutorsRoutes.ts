@@ -6,7 +6,14 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/", getAllTutorsController);
-router.get("/:id", getTutorbyIdController);
+router.get("/", async (req, res) => {
+  const id = req.query.id;
+
+  if (id) {
+    return getTutorbyIdController(req, res);
+  } else {
+    return getAllTutorsController(req, res);
+  }
+});
 
 export default router;
