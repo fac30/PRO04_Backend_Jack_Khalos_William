@@ -6,8 +6,10 @@ A brief description of your project.
 
 - [Introduction](#introduction)
 - [Branches](#branches)
+- [Running Server](#server)
 - [Committing](#committing)
 - [File Structure](#file-structure)
+- [Endpoints](#endpoints)
 
 ## Introduction
 
@@ -20,6 +22,14 @@ Each section of this document outlines important practices for:
 - Maintaining a standardized project file structure.
 
 Following these guidelines will help streamline the development process, improve code quality, and ensure smooth integration of features.
+
+## Server
+
+- To run a particular file, using npm runfile and then the path to the file you want to run from the root dir.
+
+- To run the server.ts file, use npm server
+
+- To compile, use npm compile
 
 ## Branches
 
@@ -96,6 +106,44 @@ To keep the codebase organized and ensure clear understanding, we follow these b
     - Example: `chore(deps): bump eslint version`
 
 11. **revert**: Reverts a previous commit.
+
+## Endpoints
+
+### Get All Tutors
+
+- Endpoint: GET /tutors
+- Description: Fetches a list of all available tutors.
+- Response:
+
+  - 200 OK: Returns an array of tutor objects.
+  - 404 Not Found: If no tutors are found.
+
+  - Example response:
+
+    ```ts
+    [
+      {
+        id: 1,
+        name: "John Doe",
+        subject: "Mathematics",
+      },
+      {
+        id: 2,
+        name: "Jane Smith",
+        subject: "Physics",
+      },
+    ];
+    ```
+
+### Get Tutor By ID
+
+- Endpoint: GET /tutors/:id
+- Description: Fetches details of a specific tutor by their unique ID.
+- Parameters:
+  - id (path parameter): The ID of the tutor.
+- Response:
+  - 200 OK: Returns the tutor object if found.
+  - 404 Not Found: If the tutor with the given ID does not exist.
 
 ## File Structure
 
