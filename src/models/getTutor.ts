@@ -6,14 +6,12 @@ const tutors = zubiDB.prepare("SELECT * FROM tutors");
 
 const allRows = tutors.all();
 
-// const getTutorById = (index: number) => {
-//   return allRows[index - 1];
-// };
+const getTutorById = (index: number) => {
+  return allRows[index - 1];
+};
 
-const getTutorById = () => {
+const getAllTutors = () => {
   return allRows;
 };
 
-// console.log(getTutorById(2));
-
-export default getTutorById;
+export { getAllTutors, getTutorById };
