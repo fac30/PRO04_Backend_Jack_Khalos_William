@@ -1,4 +1,4 @@
-import { getAllTutors, getTutorById } from "../models/getTutor.js";
+import { getAllTutors, getTutorById } from "../models/getTutor";
 import { Response, Request } from "express";
 
 const getAllTutorsController = (req: Request, res: Response) => {
