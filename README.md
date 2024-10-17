@@ -250,3 +250,14 @@ For environment variables, specify ```PORT``` and the port number for accessing 
 
 
 ## Index
+
+#### NPM Scripts
+
+| Name | Command | Description |
+| ------------- | -------------| ------------- |
+| build  | npm install && npx tsc && node ./dist/database/seed.js  | Installs project depenecies, compile typescript files and seed the database with data. |
+| compile  | npx tsc  | Compile ```.ts``` files from ```src``` to the ```dist``` folder. |
+| seed | npx tsc && node ./dist/database/seed.js | Compile ```.ts``` files and runs ```seed.js``` to create and seed the database. |
+| server | npx tsx watch ./src/server.ts | Run server locally using ```server.ts```. Observe and restart the server whenever changes are saved. |
+| start | node dist/server.js | Run server locally using ```server.js``` |
+| runfile | npx nodemon --exec tsx | |
