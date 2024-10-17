@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
-    "build": "npx tsc",
+    "build": "npm install && npx tsc && node ./dist/database/seed.js",
     "start": "node dist/server.js",
     "server": "npx tsx watch ./src/server.ts",
     "seed":"npx tsc && node ./dist/database/seed.js",
