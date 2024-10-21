@@ -96,3 +96,9 @@ INSERT INTO tutors (full_name, email, address, postal_code, phone_number, descri
  ('Chemistry'),
  ('Biology'),
  ('English');
+
+INSERT INTO students (full_name, email, password_hash, address, postal_code, credits)
+VALUES 
+('Jack', 'jack@zubi.com', '$2b$10$jLeVpIiAkE.m87lBsbFnh.DI193tbA3bvS28uqyBo31nl.BA1jETS', '123 Maple St', '12345', 30),
+('Will', 'will@zubi.com', '$2b$10$i4Fe4rb.TiFCbAWsk5DN4eeXj638oBilT3GaTVb/03xJ4/ugPlqvO', '456 Oak St', '54321', 25),
+('Khalos', 'khalos@zubi.com', '$2b$10$103GJdg897zS8hVSahwgz.YbghROGGZLpksTfgUJ2KXH.3meh4sTO', '789 Pine St', '67890', 20);
