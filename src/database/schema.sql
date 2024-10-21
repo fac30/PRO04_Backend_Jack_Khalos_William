@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS students (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     full_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     address VARCHAR(255) NOT NULL,
     postal_code VARCHAR(20) NOT NULL,
     credits INTEGER NOT NULL
@@ -95,3 +96,5 @@ INSERT INTO tutors (full_name, email, address, postal_code, phone_number, descri
  ('Chemistry'),
  ('Biology'),
  ('English');
+
+ INSERT INTO 
