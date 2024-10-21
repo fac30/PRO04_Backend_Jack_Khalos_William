@@ -1,8 +1,6 @@
-// authControllers.ts
 import { Response, Request, NextFunction } from "express";
 import passport from "passport";
 
-// Define the handler function type
 type AuthHandler = (
   req: Request,
   res: Response,
@@ -14,10 +12,9 @@ const loginController: AuthHandler = (req, res, next) => {
 
   if (!username || !password) {
     res.status(400).json({ message: "Username and password are required." });
-    return; // Return void instead of the response
+    return;
   }
 
-  // Return void instead of the Promise
   passport.authenticate(
     "local",
     { session: false },
