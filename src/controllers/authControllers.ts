@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import passport from "passport";
+import { User } from "../models/getPassword";
 
 type AuthHandler = (
   req: Request,
@@ -18,7 +19,7 @@ const loginController: AuthHandler = (req, res, next) => {
   passport.authenticate(
     "local",
     { session: false },
-    (err: Error | null, user: any, info: { message: string }) => {
+    (err: Error | null, user: User, info: { message: string }) => {
       if (err) {
         res.status(500).json({ error: err.message });
         return;
