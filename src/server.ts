@@ -1,5 +1,6 @@
 import express from "express";
 import tutorsRoutes from "./routes/tutorsRoutes.js";
+import subjectsRoutes from "./routes/subjectsRoutes.js"
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,6 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/tutors", tutorsRoutes);
+app.use("/subjects", subjectsRoutes)
 
 app.listen(port,()=>{
     console.log(`Server started on port: ${port}`)
