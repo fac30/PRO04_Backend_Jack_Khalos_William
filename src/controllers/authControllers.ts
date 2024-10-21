@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import passport from "passport";
-import { User } from "../models/getPassword";
+import { User } from "../models/getPassword.js";
 
 type AuthHandler = (
   req: Request,
