@@ -249,10 +249,6 @@ When choosing the instance type, select the tier that suits your needs. Be aware
 
 For environment variables, specify `PORT` and the port number for accessing the project. [Render.com](render.com) has reserved port numbers—more information can be found [here](https://docs.render.com/web-services#port-binding).
 
-## Hashing
-
-To create the hashes for the user passwords, I have created a generateHashes file that creates and console.logs three hashes for our users, and I have inserted this into the db schema.
-
 ## Index
 
 #### NPM Scripts
