@@ -10,6 +10,7 @@ A brief description of your project.
 - [Running Server](#server)
 - [Committing](#committing)
 - [File Structure](#file-structure)
+- [Hashing](#hashing)
 - [Endpoints](#endpoints)
 - [Deployment](#deployment)
 - [Index](#index)
@@ -29,23 +30,24 @@ Following these guidelines will help streamline the development process, improve
 ## Inititialise Project
 
 To start working on the project, after cloning or forking, run the command:
+
 ```
 npm build
 ```
-This will run npm install, compile the typescript into the ```dist``` folder with npx tsc, and ```node ./dist/database/seed.js``` to create the database with some initial data to work with.
 
+This will run npm install, compile the typescript into the `dist` folder with npx tsc, and `node ./dist/database/seed.js` to create the database with some initial data to work with.
 
 ## Server
 
-To run a particular file, using ```npm run runfile``` and then the path to the file you want to run from the root dir.
+To run a particular file, using `npm run runfile` and then the path to the file you want to run from the root dir.
 
-To run the server.ts file, use ```npm run server```. This project uses tsx to run typescript in node. It does not compile any typescript and runs similarly to how you would with ```node fils.js```. For more information, visit [tsx](https://tsx.is/). The ```--watch``` flag in the command allows the server to watch for new changes made to the server file including its imports and automatically restart to display the changes.
+To run the server.ts file, use `npm run server`. This project uses tsx to run typescript in node. It does not compile any typescript and runs similarly to how you would with `node fils.js`. For more information, visit [tsx](https://tsx.is/). The `--watch` flag in the command allows the server to watch for new changes made to the server file including its imports and automatically restart to display the changes.
 
-To run the server in a mock deployment, use ```npm run start``` to run the server.js file.
+To run the server in a mock deployment, use `npm run start` to run the server.js file.
 
-To compile, use ```npm run compile```. The project is configured to look at all files with ```.ts``` extension in the ```src``` folder to compile into the ```dist``` folder.
+To compile, use `npm run compile`. The project is configured to look at all files with `.ts` extension in the `src` folder to compile into the `dist` folder.
 
-If you wish to change where the files are compiling from, edit the ```include``` property in the tsconfig.json file. Similarly, to change the output location, change the ```outDir``` property in the tsconfig.json.
+If you wish to change where the files are compiling from, edit the `include` property in the tsconfig.json file. Similarly, to change the output location, change the `outDir` property in the tsconfig.json.
 
 ## Branches
 
@@ -236,28 +238,30 @@ The following is the general file structure of the project. Each folder and file
 
 ## Deployment
 
-The project is currently deployed on [Render.com](render.com). To deploy your own instance, create an account and, from your dashboard, click on ```+ NEW``` in the top navigation bar. Select ```"Web Service"``` and choose the repository you wish to deploy.
+The project is currently deployed on [Render.com](render.com). To deploy your own instance, create an account and, from your dashboard, click on `+ NEW` in the top navigation bar. Select `"Web Service"` and choose the repository you wish to deploy.
 
-For deployment settings, set the root directory to ```dist```, as this is where the compiled files are output. If you need to change the root directory, ensure the build and start commands are updated locally to reflect this change and pushed into your remote repository before deployment.
+For deployment settings, set the root directory to `dist`, as this is where the compiled files are output. If you need to change the root directory, ensure the build and start commands are updated locally to reflect this change and pushed into your remote repository before deployment.
 
-For the build command, use ```npm run build```.
-For the start command, use ```npm run start```.
+For the build command, use `npm run build`.
+For the start command, use `npm run start`.
 
 When choosing the instance type, select the tier that suits your needs. Be aware that if you opt for the free tier, resources will not be reserved for your project. This means it may take around one minute to spin up the service whenever it is accessed.
 
-For environment variables, specify ```PORT``` and the port number for accessing the project. [Render.com](render.com) has reserved port numbers—more information can be found [here](https://docs.render.com/web-services#port-binding).
+For environment variables, specify `PORT` and the port number for accessing the project. [Render.com](render.com) has reserved port numbers—more information can be found [here](https://docs.render.com/web-services#port-binding).
 
+## Hashing
 
+To create the hashes for the user passwords, I have created a generateHashes file that creates and console.logs three hashes for our users, and I have inserted this into the db schema.
 
 ## Index
 
 #### NPM Scripts
 
-| Name | Command | Description |
-| ------------- | -------------| ------------- |
-| build  | npm install && npx tsc && node ./dist/database/seed.js  | Installs project depenecies, compile typescript files and seed the database with data. |
-| compile  | npx tsc  | Compile ```.ts``` files from ```src``` to the ```dist``` folder. |
-| seed | npx tsc && node ./dist/database/seed.js | Compile ```.ts``` files and runs ```seed.js``` to create and seed the database. |
-| server | npx tsx watch ./src/server.ts | Run server locally using ```server.ts```. Observe and restart the server whenever changes are saved. |
-| start | node dist/server.js | Run server locally using ```server.js``` |
-| runfile | npx nodemon --exec tsx | |
+| Name    | Command                                                | Description                                                                                      |
+| ------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| build   | npm install && npx tsc && node ./dist/database/seed.js | Installs project depenecies, compile typescript files and seed the database with data.           |
+| compile | npx tsc                                                | Compile `.ts` files from `src` to the `dist` folder.                                             |
+| seed    | npx tsc && node ./dist/database/seed.js                | Compile `.ts` files and runs `seed.js` to create and seed the database.                          |
+| server  | npx tsx watch ./src/server.ts                          | Run server locally using `server.ts`. Observe and restart the server whenever changes are saved. |
+| start   | node dist/server.js                                    | Run server locally using `server.js`                                                             |
+| runfile | npx nodemon --exec tsx                                 |                                                                                                  |
