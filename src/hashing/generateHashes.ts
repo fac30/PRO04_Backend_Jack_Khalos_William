@@ -1,20 +1,20 @@
 import bcrypt from "bcrypt";
 
 const generateHashes = async () => {
-  const passwords = ["password123", "securepass456", "mypassword789"];
-  const saltRounds = 10; // Number of salt rounds for bcrypt
+  const passwords = ["jj", "ww", "kk"];
+  const saltRounds = 10;
+  const hashes = [];
 
   for (const password of passwords) {
     try {
-      // Generate hash for each password
       const hash = await bcrypt.hash(password, saltRounds);
+      hashes.push(hash);
       console.log(`Password: ${password}, Hash: ${hash}`);
     } catch (error) {
       console.error("Error hashing password:", error);
     }
   }
+  return hashes;
 };
 
-// Call the function to generate hashes
-generateHashes();
-g
+export default generateHashes();

@@ -96,5 +96,3 @@ INSERT INTO tutors (full_name, email, address, postal_code, phone_number, descri
  ('Chemistry'),
  ('Biology'),
  ('English');
-
- INSERT INTO 
