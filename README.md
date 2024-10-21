@@ -280,7 +280,7 @@ describe("getTutorById should return tutor with given id argument.", ()=>{
           img_source: "https://images.unsplash.com/photo-1461039088886-b5c863279a0e?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         };
 
-        assert.deepEqual(getTutorById(1), tutor)
+        assert.deepEqual(getTutorById(1), tutor) // get tutor with id = 1 and check it is equal to the dummy data
     })
 })
 ```
@@ -289,7 +289,7 @@ describe("getTutorById should return tutor with given id argument.", ()=>{
 
 - describe: used to defined the test suite. The suite is titled, `"getTutorById should return tutor with given id argument."` to describe what the test suite is testing.
 - it: describes the test case for specific functionality.
-- assert: from the chai library, allows use of assert.deepEqual allows comparing the expected output with the actual output.
+- assert: Provided by the Chai library, it enables assertions in tests, such as comparing actual results with expected ones. Commonly used methods include `assert.deepEqual` for deep comparisons of objects and `assert.strictEqual` for strict equality checks.
 
 
 ## File Structure
