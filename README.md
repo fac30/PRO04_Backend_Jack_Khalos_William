@@ -210,6 +210,47 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 }
 ```
 
+### Log in
+
+- Endpoint: POST /login
+- Example request: `http://localhost:3000/login`
+- Description: Authenticates login using provided password
+- Parameters:
+  - Body: JSON object
+
+Example request body:
+
+```json
+{
+  "username": "khalos@zubi.com",
+  "password": "jj"
+}
+```
+
+#### Example responses:
+
+- If correct:
+
+```json
+{
+  "message": "Login successful",
+  "user": {
+    "id": 3,
+    "full_name": "Khalos",
+    "email": "khalos@zubi.com",
+    "password_hash": "$21p0$jansdfj&&hbnsaf.YbghROGGZLpksTfgUJ2KXH.3meh4sTO"
+  }
+}
+```
+
+- If incorrect:
+
+```json
+{
+  "message": "Incorrect username or password."
+}
+```
+
 ## Testing
 
 To conduct unit testing and integration testing for the routes, controllers and models, we use mocha, chai and supertest. These tools allow us to simulate HTTP requests, validate responses, and verify the correctness of the underlying project logic.

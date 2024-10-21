@@ -1,7 +1,5 @@
 import zubiDB from "../database/db.js";
 
-// console.log(zubiDB);
-
 const tutors = zubiDB.prepare("SELECT * FROM tutors");
 
 const allRows = tutors.all();
