@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 const generateHashes = async () => {
   const passwords = ["jj", "ww", "kk"];
@@ -9,7 +10,8 @@ const generateHashes = async () => {
     try {
       const hash = await bcrypt.hash(password, saltRounds);
       hashes.push(hash);
-      console.log(`Password: ${password}, Hash: ${hash}`);
+      const salt = crypto.randomBytes(16).toString("hex"); // Generate random salt
+      console.log(`Password: ${password}, Hash: ${hash}, Salt: ${salt}`);
     } catch (error) {
       console.error("Error hashing password:", error);
     }
