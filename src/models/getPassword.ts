@@ -4,7 +4,7 @@ export interface User {
   id: number;
   full_name: string;
   email: string;
-  password_hash: string; // Adjust according to your database schema
+  password_hash: string;
 }
 
 const selectStudentByEmail = zubiDB.prepare(
