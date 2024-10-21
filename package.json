@@ -9,7 +9,7 @@
     "build": "npm install && npx tsc && node ./dist/database/seed.js",
     "start": "node dist/server.js",
     "server": "npx tsx watch ./src/server.ts",
-    "seed":"npx tsc && node ./dist/database/seed.js",
+    "seed": "npx tsc && node ./dist/database/seed.js",
     "runfile": "npx nodemon --exec tsx"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "@types/better-sqlite3": "^7.6.11",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
+    "bcrypt": "^5.1.1",
     "husky": "^9.1.6",
     "mocha": "^10.7.3",
     "nodemon": "^3.1.7",
@@ -33,6 +34,9 @@
   "dependencies": {
     "better-sqlite3": "^11.3.0",
     "dotenv": "^16.4.5",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
   }
 }
