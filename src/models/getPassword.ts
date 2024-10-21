@@ -1,13 +1,19 @@
 import zubiDB from "../database/db";
 
+export interface User {
+  id: number;
+  full_name: string;
+  email: string;
+  password_hash: string; // Adjust according to your database schema
+}
+
 const selectStudentByEmail = zubiDB.prepare(
   "SELECT id, full_name, email, password_hash FROM students WHERE email = ?"
 );
 
-const getStudentByEmail = (email: string) => {
-  const student = selectStudentByEmail.get(email);
-  console.log(student);
-  return student;
+const getStudentByEmail = (email: string): User | null => {
+  const student = selectStudentByEmail.get(email) as User | undefined;
+  return student || null;
 };
 
 getStudentByEmail("khalos@zubi.com");

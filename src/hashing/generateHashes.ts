@@ -10,8 +10,7 @@ const generateHashes = async () => {
     try {
       const hash = await bcrypt.hash(password, saltRounds);
       hashes.push(hash);
-      const salt = crypto.randomBytes(16).toString("hex"); // Generate random salt
-      console.log(`Password: ${password}, Hash: ${hash}, Salt: ${salt}`);
+      console.log(`Password: ${password}, Hash: ${hash}`);
     } catch (error) {
       console.error("Error hashing password:", error);
     }
