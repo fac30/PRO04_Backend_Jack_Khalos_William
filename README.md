@@ -209,6 +209,47 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 }
 ```
 
+### Log in
+
+- Endpoint: POST /login
+- Example request: `http://localhost:3000/login`
+- Description: Authenticates login using provided password
+- Parameters:
+  - Body: JSON object
+
+Example request body:
+
+```json
+{
+  "username": "khalos@zubi.com",
+  "password": "jj"
+}
+```
+
+#### Example responses:
+
+- If correct:
+
+```json
+{
+  "message": "Login successful",
+  "user": {
+    "id": 3,
+    "full_name": "Khalos",
+    "email": "khalos@zubi.com",
+    "password_hash": "$21p0$jansdfj&&hbnsaf.YbghROGGZLpksTfgUJ2KXH.3meh4sTO"
+  }
+}
+```
+
+- If incorrect:
+
+```json
+{
+  "message": "Incorrect username or password."
+}
+```
+
 ## File Structure
 
 The following is the general file structure of the project. Each folder and file serves a specific purpose:
