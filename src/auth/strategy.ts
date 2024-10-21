@@ -3,21 +3,18 @@ import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 import getStudentByEmail from "../models/getPassword";
 
-const checkPassword = () => {
+const loadStrategy = () => {
   passport.use(
-    new LocalStrategy(function verify(username, password, cb) {
-      const dummy = "jack@zubi.com";
+    new LocalStrategy(async (username, password, cb) => {
       try {
-        const user = getStudentByEmail(dummy);
+        const user = getStudentByEmail(username);
         if (!user) {
           return cb(null, false, {
             message: "Incorrect username or password.",
           });
         }
 
-        console.log(user);
-
-        const match = bcrypt.compare(password, user.password_hash);
+        const match = await bcrypt.compare(password, user.password_hash);
         if (!match) {
           return cb(null, false, {
             message: "Incorrect username or password.",
@@ -32,4 +29,4 @@ const checkPassword = () => {
   );
 };
 
-export default checkPassword;
+export default loadStrategy;

@@ -4,14 +4,15 @@ import subjectsRoutes from "./routes/subjectsRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import dotenv from "dotenv";
 import passport from "passport";
-import checkPassword from "./auth/passwordCheck.js";
+import loadStrategy from "./auth/strategy.js";
 
 dotenv.config();
 
 const app = express();
+
 app.use(express.json());
 app.use(passport.initialize());
-checkPassword();
+loadStrategy();
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
