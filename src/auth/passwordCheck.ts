@@ -1,7 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
-import zubiDB from "../database/db";
 import getStudentByEmail from "../models/getPassword";
 
 const checkPassword = () => {
