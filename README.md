@@ -263,7 +263,7 @@ Below is an example of a unit test and an integration test:
 
 `getTutor.test.ts`
 ```
-describe("getTutorById should return tutor with given id arguement.", ()=>{
+describe("getTutorById should return tutor with given id argument.", ()=>{
     it("should return the tutor of id = 1", ()=>{
         const tutor: Tutor = {
             id: 1,
@@ -287,7 +287,7 @@ describe("getTutorById should return tutor with given id arguement.", ()=>{
 
 #### Breakdown
 
-- describe: used to defined the test suite. The suite is titled, `"getTutorById should return tutor with given id arguement."` to describe what the test suite is testing.
+- describe: used to defined the test suite. The suite is titled, `"getTutorById should return tutor with given id argument."` to describe what the test suite is testing.
 - it: describes the test case for specific functionality.
 - assert: from the chai library, allows use of assert.deepEqual allows comparing the expected output with the actual output.
 
