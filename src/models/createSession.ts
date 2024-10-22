@@ -1,4 +1,3 @@
-import { create } from "domain";
 import zubiDB from "../database/db";
 
 const insertSession = zubiDB.prepare(/*SQL*/ `
