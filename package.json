@@ -4,13 +4,13 @@
   "main": "./src/server.ts",
   "type": "module",
   "scripts": {
-    "test": "tsx node_modules/.bin/mocha 'src/testing/**/*.ts'",
+    "test": "DB_TYPE=test tsx node_modules/.bin/mocha 'src/testing/**/*.ts'",
     "prepare": "husky",
     "build": "npm install && npx tsc && node ./dist/database/seed.js",
     "start": "node dist/server.js",
     "server": "npx tsx watch ./src/server.ts",
     "seed": "npx tsc && node ./dist/database/seed.js",
-    "seedtest": "DB_TYPE=test && npx tsc && node ./dist/database/seed.js",
+    "seedtest": "npx tsc && DB_TYPE=test node ./dist/database/seed.js",
     "runfile": "npx nodemon --exec tsx"
   },
   "keywords": [],
