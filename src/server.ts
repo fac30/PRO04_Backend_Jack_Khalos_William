@@ -1,8 +1,5 @@
 import express from "express";
-import tutorsRoutes from "./routes/tutorsRoutes.js";
-import subjectsRoutes from "./routes/subjectsRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
-import cookieRoutes from "./routes/cookieRoutes.js";
+import routes from "./routes/indexRoutes.js";
 import dotenv from "dotenv";
 import passport from "passport";
 import loadStrategy from "./auth/strategy.js";
@@ -38,10 +35,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("/tutors", tutorsRoutes);
-app.use("/subjects", subjectsRoutes);
-app.use("/auth", authRoutes);
-app.use("/cookie", cookieRoutes);
+app.use(routes);
 
 app.listen(port, () => {
   console.log(`Server started on port: ${port}`);

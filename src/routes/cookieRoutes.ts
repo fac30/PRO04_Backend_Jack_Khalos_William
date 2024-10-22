@@ -12,7 +12,7 @@ You can create a new test file and add it to gitignore to change the values in t
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/cookies", (req, res) => {
   res.cookie("hello", "world", { maxAge: 600000, signed: true });
   console.log(req.session);
   console.log(req.session.id);
@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
   res.send({ message: "Hello" });
 });
 
-router.get("/response", (req, res) => {
+router.get("/cookies/response", (req, res) => {
   /* console.log(req.headers.cookie);
   console.log(req.cookies);
   console.log(req.signedCookies.hello);
