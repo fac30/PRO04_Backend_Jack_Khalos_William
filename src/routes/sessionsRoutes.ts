@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { createTutorAvailabilityController } from "../controllers/sessionsControllers";
+import {
+  createTutorAvailabilityController,
+  bookSessionController,
+} from "../controllers/sessionsControllers";
 
 const router = Router();
 
 router.get("/tutorslot", createTutorAvailabilityController);
+router.get("/newsession", bookSessionController);
 
 export default router;

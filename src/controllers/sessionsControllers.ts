@@ -1,4 +1,5 @@
 import createTutorAvailability from "../models/createSession";
+import bookSession from "../models/bookSession";
 import { Request, Response } from "express";
 
 interface CreateAvailabilityRequest {
@@ -19,4 +20,18 @@ const createTutorAvailabilityController = (
   res.status(201).json({ message: "Tutor availability created successfully" });
 };
 
-export { createTutorAvailabilityController };
+const bookSessionController = (req, res) => {
+  const { dateTime, tutorID } = req.body;
+  if (!dateTime || !tutorID) {
+    res
+      .status(400)
+      .json({ message: "To book, please enter a date, time and tutor" });
+    return;
+  }
+  bookSession(dateTime, tutorID);
+  res.status(201).json({
+    message: `Session booked successfully at ${dateTime} with tutor ${tutorID}`,
+  });
+};
+
+export { createTutorAvailabilityController, bookSessionController };
