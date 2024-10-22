@@ -6,7 +6,7 @@ import {
 
 const router = Router();
 
-router.get("/tutorslot", createTutorAvailabilityController);
-router.get("/newsession", bookSessionController);
+router.post("/tutorslot", createTutorAvailabilityController);
+router.post("/newsession", bookSessionController);
 
 export default router;

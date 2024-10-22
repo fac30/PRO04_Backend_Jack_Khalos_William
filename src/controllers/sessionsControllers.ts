@@ -1,6 +1,7 @@
 import createTutorAvailability from "../models/createSession";
-import bookSession from "../models/bookSession";
+import { bookSession, findSession } from "../models/bookSession";
 import { Request, Response } from "express";
+import { Session } from "../models/bookSession";
 
 interface CreateAvailabilityRequest {
   dateTime: string;
@@ -20,22 +21,30 @@ const createTutorAvailabilityController = (
   res.status(201).json({ message: "Tutor availability created successfully" });
 };
 
-const bookSessionController = (req: Request, res: Response) => {
+const bookSessionController = (req: Request, res: Response): Response => {
   const { dateTime, tutorID } = req.body;
   if (!dateTime || !tutorID) {
-    res
+    return res
       .status(400)
       .json({ message: "To book, please enter a date, time and tutor" });
-    return;
   }
-  const changes = bookSession(dateTime, tutorID);
-  if (changes > 0) {
-    res.status(201).json({
-      message: `Session booked successfully at ${dateTime} with tutor ${tutorID}`,
+
+  const session = findSession(dateTime, tutorID) as Session | undefined;
+
+  if (!session) {
+    return res.status(404).json({
+      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}.`,
+    });
+  }
+
+  if (session.booking_status === "booked") {
+    return res.status(401).json({
+      message: `Session is already booked`,
     });
   } else {
-    res.status(404).json({
-      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}, or it's already booked.`,
+    bookSession(session);
+    return res.status(201).json({
+      message: `Session booked`,
     });
   }
 };
