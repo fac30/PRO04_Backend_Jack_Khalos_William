@@ -9,7 +9,7 @@
     "build": "npm install && npx tsc && node ./dist/database/seed.js",
     "start": "node dist/server.js",
     "server": "npx tsx watch ./src/server.ts",
-    "seed":  "npx tsc && node ./dist/database/seed.js",
+    "seed": "npx tsc && node ./dist/database/seed.js",
     "runfile": "npx nodemon --exec tsx"
   },
   "keywords": [],
