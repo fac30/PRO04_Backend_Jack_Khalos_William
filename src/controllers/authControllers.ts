@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction } from "express";
 import passport from "passport";
-import { Express } from "express"; // Import the Express namespace
 
 const loginController = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
@@ -31,7 +30,6 @@ const loginController = (req: Request, res: Response, next: NextFunction) => {
   )(req, res, next);
 };
 
-// Middleware to check if user is authenticated
 const isAuthenticated = (req: Request, res: Response, next: Function) => {
   if (req.isAuthenticated()) {
     return next();
