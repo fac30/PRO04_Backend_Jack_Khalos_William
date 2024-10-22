@@ -2,10 +2,12 @@ import express from "express";
 import tutorsRoutes from "./routes/tutorsRoutes.js";
 import subjectsRoutes from "./routes/subjectsRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import cookieRoutes from "./routes/cookieRoutes.js";
 import dotenv from "dotenv";
 import passport from "passport";
 import loadStrategy from "./auth/strategy.js";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -26,6 +28,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser("zubiSecretKey"));
 app.use(passport.initialize());
 app.use(passport.session());
 loadStrategy();
@@ -38,6 +41,7 @@ app.get("/", (req, res) => {
 app.use("/tutors", tutorsRoutes);
 app.use("/subjects", subjectsRoutes);
 app.use("/auth", authRoutes);
+app.use("/cookie", cookieRoutes);
 
 app.listen(port, () => {
   console.log(`Server started on port: ${port}`);
