@@ -10,6 +10,7 @@
     "start": "node dist/server.js",
     "server": "npx tsx watch ./src/server.ts",
     "seed": "npx tsc && node ./dist/database/seed.js",
+    "seedtest": "DB_TYPE=test && npx tsc && node ./dist/database/seed.js",
     "runfile": "npx nodemon --exec tsx"
   },
   "keywords": [],
