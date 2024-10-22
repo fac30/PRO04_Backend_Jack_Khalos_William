@@ -11,7 +11,6 @@ A brief description of your project.
 - [Committing](#committing)
 - [Testing](#testing)
 - [File Structure](#file-structure)
-- [Hashing](#hashing)
 - [Endpoints](#endpoints)
 - [Deployment](#deployment)
 - [Index](#index)
@@ -251,17 +250,48 @@ Example request body:
 }
 ```
 
+### Check Authentication
+
+- Endpoint: GET /login/check-auth
+- Example request: `http://localhost:3000/login/check-auth`
+- Description: Checks if user has previously logged in, using cookies stored in the browser or Postman/Insomnia
+
+#### Example responses:
+
+- If authenticated:
+
+```json
+{
+  "authenticated": true,
+  "user": {
+    "id": 3,
+    "full_name": "Khalos",
+    "email": "khalos@zubi.com",
+    "password_hash": "$2b$10$324312123.asdfasdfahsdfhsannn.3meh4sTO"
+  }
+}
+```
+
+- If not
+
+```json
+{
+  "message": "Not authenticated"
+}
+```
+
 ## Testing
 
 To conduct unit testing and integration testing for the routes, controllers and models, we use mocha, chai and supertest. These tools allow us to simulate HTTP requests, validate responses, and verify the correctness of the underlying project logic.
 
 - Mocha: is our test framework, for organising and running our tests.
-- Chai: an assertion library, that enables us to write human-readable assertions and validate that the actual results match our expectations. 
+- Chai: an assertion library, that enables us to write human-readable assertions and validate that the actual results match our expectations.
 - Supertest: simulate HTTP requests to our Express routes, making it easy to perform integration tests by invoking routes as if we were an actual user.
 
 Below is an example of a unit test and an integration test:
 
 `getTutor.test.ts`
+
 ```
 describe("getTutorById should return tutor with given id argument.", ()=>{
     it("should return the tutor of id = 1", ()=>{
@@ -290,7 +320,6 @@ describe("getTutorById should return tutor with given id argument.", ()=>{
 - describe: used to defined the test suite. The suite is titled, `"getTutorById should return tutor with given id argument."` to describe what the test suite is testing.
 - it: describes the test case for specific functionality.
 - assert: Provided by the Chai library, it enables assertions in tests, such as comparing actual results with expected ones. Commonly used methods include `assert.deepEqual` for deep comparisons of objects and `assert.strictEqual` for strict equality checks.
-
 
 ## File Structure
 
@@ -336,12 +365,12 @@ For environment variables, specify `PORT` and the port number for accessing the 
 
 #### NPM Scripts
 
-| Name    | Command                                                | Description                                                                                      |
-| ------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| build   | npm install && npx tsc && node ./dist/database/seed.js | Installs project depenecies, compile typescript files and seed the database with data.           |
-| compile | npx tsc                                                | Compile `.ts` files from `src` to the `dist` folder.                                             |
-| seed    | npx tsc && node ./dist/database/seed.js                | Compile `.ts` files and runs `seed.js` to create and seed the database.                          |
-| server  | npx tsx watch ./src/server.ts                          | Run server locally using `server.ts`. Observe and restart the server whenever changes are saved. |
-| start   | node dist/server.js                                    | Run server locally using `server.js`                                                             |
-| runfile | npx nodemon --exec tsx                                 | Runs nodemon, which automatically restarts the application when files change, and uses tsx to execute the TypeScript files without needing to compile them.                                                                                                 |
-| test | tsx node_modules/.bin/mocha 'src/testing/**/*.ts' | Run all TypeScript test files in the src/testing directory using Mocha with tsx to handle TypeScript execution without compilation.
+| Name    | Command                                                | Description                                                                                                                                                 |
+| ------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| build   | npm install && npx tsc && node ./dist/database/seed.js | Installs project depenecies, compile typescript files and seed the database with data.                                                                      |
+| compile | npx tsc                                                | Compile `.ts` files from `src` to the `dist` folder.                                                                                                        |
+| seed    | npx tsc && node ./dist/database/seed.js                | Compile `.ts` files and runs `seed.js` to create and seed the database.                                                                                     |
+| server  | npx tsx watch ./src/server.ts                          | Run server locally using `server.ts`. Observe and restart the server whenever changes are saved.                                                            |
+| start   | node dist/server.js                                    | Run server locally using `server.js`                                                                                                                        |
+| runfile | npx nodemon --exec tsx                                 | Runs nodemon, which automatically restarts the application when files change, and uses tsx to execute the TypeScript files without needing to compile them. |
+| test    | tsx node\*modules/.bin/mocha 'src/testing/\*\*/\_.ts'  | Run all TypeScript test files in the src/testing directory using Mocha with tsx to handle TypeScript execution without compilation.                         |

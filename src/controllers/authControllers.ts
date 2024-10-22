@@ -1,36 +1,40 @@
 import { Response, Request, NextFunction } from "express";
 import passport from "passport";
-import { User } from "../models/getPassword.js";
 
-type AuthHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => Promise<void> | void;
+const loginController = (req: Request, res: Response, next: NextFunction) => {
+  const { email, password } = req.body;
 
-const loginController: AuthHandler = (req, res, next) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    res.status(400).json({ message: "Username and password are required." });
+  if (!email || !password) {
+    res.status(400).json({ message: "Email and password are required." });
     return;
   }
 
   passport.authenticate(
     "local",
-    { session: false },
-    (err: Error | null, user: User, info: { message: string }) => {
+    { session: true },
+    (err: any, user: Express.User | false, info: { message: string }) => {
       if (err) {
-        res.status(500).json({ error: err.message });
-        return;
+        return res.status(500).json({ error: err.message });
       }
       if (!user) {
-        res.status(401).json({ message: info.message });
-        return;
+        return res.status(401).json({ message: info.message });
       }
-      res.status(200).json({ message: "Login successful", user });
+
+      req.logIn(user, (err) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+        return res.status(200).json({ message: "Login successful", user });
+      });
     }
   )(req, res, next);
 };
 
-export default loginController;
+const isAuthenticated = (req: Request, res: Response, next: Function) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ message: "Not authenticated" });
+};
+
+export { loginController, isAuthenticated };
