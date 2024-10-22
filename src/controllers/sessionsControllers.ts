@@ -9,8 +9,6 @@ interface CreateAvailabilityRequest {
   tutorID: number;
 }
 
-// interface bookSessionInterface
-
 const createTutorAvailabilityController = (
   req: Request<{}, {}, CreateAvailabilityRequest>,
   res: Response
