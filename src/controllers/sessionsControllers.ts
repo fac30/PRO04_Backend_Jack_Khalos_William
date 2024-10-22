@@ -28,10 +28,16 @@ const bookSessionController = (req: Request, res: Response) => {
       .json({ message: "To book, please enter a date, time and tutor" });
     return;
   }
-  bookSession(dateTime, tutorID);
-  res.status(201).json({
-    message: `Session booked successfully at ${dateTime} with tutor ${tutorID}`,
-  });
+  const changes = bookSession(dateTime, tutorID);
+  if (changes > 0) {
+    res.status(201).json({
+      message: `Session booked successfully at ${dateTime} with tutor ${tutorID}`,
+    });
+  } else {
+    res.status(404).json({
+      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}, or it's already booked.`,
+    });
+  }
 };
 
 export { createTutorAvailabilityController, bookSessionController };
