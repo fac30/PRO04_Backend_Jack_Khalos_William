@@ -19,25 +19,26 @@ const loadStrategy = () => {
       {
         usernameField: "email",
       },
-      async (email, password, cb) => {
+      async (email, password, callback) => {
+        console.log(`email: ${email}`);
+        console.log(`password: ${password}`);
         try {
-          const user = getStudentByEmail(email);
+          const user = await getStudentByEmail(email);
           if (!user) {
-            return cb(null, false, {
-              message: "Incorrect email or password.",
-            });
+            throw new Error("Incorrect email or password.");
           }
 
           const match = await bcrypt.compare(password, user.password_hash);
           if (!match) {
-            return cb(null, false, {
-              message: "Incorrect email or password.",
-            });
+            throw new Error("Invalid password.");
           }
-
-          return cb(null, user);
+          return callback(null, user);
         } catch (err) {
-          return cb(err);
+          if (err instanceof Error) {
+            callback(err, undefined);
+          } else {
+            callback("Incorrect email or password.", undefined);
+          }
         }
       }
     )
