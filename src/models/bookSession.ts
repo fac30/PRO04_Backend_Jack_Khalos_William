@@ -14,13 +14,14 @@ const find_session = zubiDB.prepare(
 );
 
 const book_session = zubiDB.prepare(/*SQL*/ `
-    UPDATE sessions 
-    SET booking_status = 'booked'
-    WHERE id = ? 
-  `);
+  UPDATE sessions 
+  SET booking_status = 'booked'
+  WHERE id = ? 
+`);
 
-const findSession = (time: string, tutor: number) => {
-  return find_session.get(time, tutor);
+const findSession = (time: string, tutor: number): Session | undefined => {
+  const result = find_session.get(time, tutor);
+  return result as Session | undefined; 
 };
 
 const bookSession = (session: Session) => {

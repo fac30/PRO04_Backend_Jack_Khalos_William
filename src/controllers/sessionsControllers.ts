@@ -9,6 +9,8 @@ interface CreateAvailabilityRequest {
   tutorID: number;
 }
 
+// interface bookSessionInterface
+
 const createTutorAvailabilityController = (
   req: Request<{}, {}, CreateAvailabilityRequest>,
   res: Response
@@ -22,29 +24,30 @@ const createTutorAvailabilityController = (
   res.status(201).json({ message: "Tutor availability created successfully" });
 };
 
-const bookSessionController = (req: Request, res: Response): Response => {
+const bookSessionController = (req: Request, res: Response) => {
   const { dateTime, tutorID } = req.body;
   if (!dateTime || !tutorID) {
-    return res
+    res
       .status(400)
       .json({ message: "To book, please enter a date, time and tutor" });
   }
 
-  const session = findSession(dateTime, tutorID) as Session | undefined;
+  const session: Session | undefined = findSession(dateTime, tutorID);
 
-  if (!session) {
-    return res.status(404).json({
-      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}.`,
+  if (session === undefined) {
+    res.status(404).json({
+      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}. It is undefined`,
     });
+    return;
   }
 
   if (session.booking_status === "booked") {
-    return res.status(401).json({
+    res.status(401).json({
       message: `Session is already booked`,
     });
   } else {
     bookSession(session);
-    return res.status(201).json({
+    res.status(201).json({
       message: `Session booked`,
     });
   }
