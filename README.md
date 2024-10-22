@@ -9,6 +9,7 @@ A brief description of your project.
 - [Branches](#branches)
 - [Running Server](#server)
 - [Committing](#committing)
+- [Testing](#testing)
 - [File Structure](#file-structure)
 - [Hashing](#hashing)
 - [Endpoints](#endpoints)
@@ -250,6 +251,47 @@ Example request body:
 }
 ```
 
+## Testing
+
+To conduct unit testing and integration testing for the routes, controllers and models, we use mocha, chai and supertest. These tools allow us to simulate HTTP requests, validate responses, and verify the correctness of the underlying project logic.
+
+- Mocha: is our test framework, for organising and running our tests.
+- Chai: an assertion library, that enables us to write human-readable assertions and validate that the actual results match our expectations. 
+- Supertest: simulate HTTP requests to our Express routes, making it easy to perform integration tests by invoking routes as if we were an actual user.
+
+Below is an example of a unit test and an integration test:
+
+`getTutor.test.ts`
+```
+describe("getTutorById should return tutor with given id argument.", ()=>{
+    it("should return the tutor of id = 1", ()=>{
+        const tutor: Tutor = {
+            id: 1,
+          full_name: "Itziar Cantero",
+          email: "itziar.cantero@example.com",
+          address: "456 Tutor St",
+          postal_code: "54321",
+          phone_number: "07700900002",
+          description: "Hi! I’m Itziar and I’m so excited to start teaching Computer Science. I have a Master’s from MIT and like to sneak everywhere.",
+          availability: '{"Monday": ["10:00-12:00", "14:00-16:00"], "Wednesday": ["10:00-12:00"], "Friday": ["14:00-16:00"]}',
+          created_at: "2024-10-21 12:47:42",
+          fk_subject_id: null,
+          fk_tutortype_id: null,
+          img_source: "https://images.unsplash.com/photo-1461039088886-b5c863279a0e?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        };
+
+        assert.deepEqual(getTutorById(1), tutor) // get tutor with id = 1 and check it is equal to the dummy data
+    })
+})
+```
+
+#### Breakdown
+
+- describe: used to defined the test suite. The suite is titled, `"getTutorById should return tutor with given id argument."` to describe what the test suite is testing.
+- it: describes the test case for specific functionality.
+- assert: Provided by the Chai library, it enables assertions in tests, such as comparing actual results with expected ones. Commonly used methods include `assert.deepEqual` for deep comparisons of objects and `assert.strictEqual` for strict equality checks.
+
+
 ## File Structure
 
 The following is the general file structure of the project. Each folder and file serves a specific purpose:
@@ -301,4 +343,5 @@ For environment variables, specify `PORT` and the port number for accessing the 
 | seed    | npx tsc && node ./dist/database/seed.js                | Compile `.ts` files and runs `seed.js` to create and seed the database.                          |
 | server  | npx tsx watch ./src/server.ts                          | Run server locally using `server.ts`. Observe and restart the server whenever changes are saved. |
 | start   | node dist/server.js                                    | Run server locally using `server.js`                                                             |
-| runfile | npx nodemon --exec tsx                                 |                                                                                                  |
+| runfile | npx nodemon --exec tsx                                 | Runs nodemon, which automatically restarts the application when files change, and uses tsx to execute the TypeScript files without needing to compile them.                                                                                                 |
+| test | tsx node_modules/.bin/mocha 'src/testing/**/*.ts' | Run all TypeScript test files in the src/testing directory using Mocha with tsx to handle TypeScript execution without compilation.
