@@ -1,5 +1,6 @@
 import createTutorAvailability from "../models/createSession";
 import { bookSession, findSession } from "../models/bookSession";
+import { getSessionsByTutorId } from "../models/getSession";
 import { Request, Response } from "express";
 import { Session } from "../models/bookSession";
 
@@ -49,4 +50,20 @@ const bookSessionController = (req: Request, res: Response): Response => {
   }
 };
 
-export { createTutorAvailabilityController, bookSessionController };
+const getSessionsByTutorIdController = (req: Request, res: Response) => {
+  const { tutorId } = req.body;
+  const allSessions = getSessionsByTutorId(tutorId);
+  if (!allSessions) {
+    return res.status(404).json({
+      message: `No sessions found.`,
+    });
+  } else {
+    return res.status(201).send(allSessions);
+  }
+};
+
+export {
+  createTutorAvailabilityController,
+  bookSessionController,
+  getSessionsByTutorIdController,
+};
