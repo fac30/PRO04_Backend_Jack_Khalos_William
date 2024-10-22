@@ -20,7 +20,7 @@ const createTutorAvailabilityController = (
   res.status(201).json({ message: "Tutor availability created successfully" });
 };
 
-const bookSessionController = (req, res) => {
+const bookSessionController = (req: Request, res: Response) => {
   const { dateTime, tutorID } = req.body;
   if (!dateTime || !tutorID) {
     res
