@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   session({
-    secret: "yourSecretKey", // Change this to a strong secret key
+    secret: "zubiSecretKey", // Change this to a strong secret key
     resave: false, // Don't save session if not modified
     saveUninitialized: false, // Only save sessions when they are used
     cookie: {
@@ -25,6 +25,7 @@ app.use(
 
 app.use(express.json());
 app.use(passport.initialize());
+app.use(passport.session());
 loadStrategy();
 const port = process.env.PORT || 3000;
 
