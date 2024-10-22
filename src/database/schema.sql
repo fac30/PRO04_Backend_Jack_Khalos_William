@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS tutors (
     postal_code VARCHAR(20) NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
     description VARCHAR(170) NOT NULL,
-    availability TEXT NULL,
     fk_subject_id INTEGER NULL,
     fk_tutortype_id INTEGER NULL,
     img_source VARCHAR(255) NULL,
@@ -46,7 +45,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 session_time DATETIME NOT NULL,
-status TEXT NOT NULL,
+booking_status TEXT NOT NULL,
 fk_student_id INTEGER NULL,
 fk_tutor_id INTEGER NULL,
 FOREIGN KEY (fk_tutor_id) REFERENCES tutors(id),
@@ -68,25 +67,20 @@ FOREIGN KEY (fk_tutor_id) REFERENCES tutors(id)
 
 COMMIT;
 
-INSERT INTO tutors (full_name, email, address, postal_code, phone_number, description, availability, fk_subject_id, fk_tutortype_id, img_source)
+INSERT INTO tutors (full_name, email, address, postal_code, phone_number, description, fk_subject_id, fk_tutortype_id, img_source)
  VALUES
- ('Itziar Cantero', 'itziar.cantero@example.com', '456 Tutor St', '54321', '07700900002', 'Hi! I’m Itziar and I’m so excited to start teaching Computer Science. I have a Master’s from MIT and like to sneak everywhere.', 
-    '{"Monday": ["10:00-12:00", "14:00-16:00"], "Wednesday": ["10:00-12:00"], "Friday": ["14:00-16:00"]}', NULL, NULL, 
+ ('Itziar Cantero', 'itziar.cantero@example.com', '456 Tutor St', '54321', '07700900002', 'Hi! I’m Itziar and I’m so excited to start teaching Computer Science. I have a Master’s from MIT and like to sneak everywhere.', NULL, NULL, 
     'https://images.unsplash.com/photo-1461039088886-b5c863279a0e?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-    ('Ben Craddock', 'ben.craddock@example.com', '123 Tutor Lane', '12345', '07700900001', 'I’m Ben, a mathematician with a degree from the University of Oxford. I like riding horses and travelling around Norfolk.', 
-    '{"Monday": ["10:00-12:00", "14:00-16:00"], "Wednesday": ["10:00-11:00"], "Friday": ["15:00-17:00"]}', NULL, NULL, 
+    ('Ben Craddock', 'ben.craddock@example.com', '123 Tutor Lane', '12345', '07700900001', 'I’m Ben, a mathematician with a degree from the University of Oxford. I like riding horses and travelling around Norfolk.', NULL, NULL, 
     'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
     
-    ('Tanya Gurova', 'tanya.gurova@example.com', '789 Tutor Blvd', '11223', '07700900003', 'I’m Tanya, a physics tutor with a passion for helping students understand complex concepts. I enjoy hiking and spending time in nature.', 
-    '{"Tuesday": ["09:00-11:00"], "Thursday": ["13:00-15:00", "16:00-18:00"], "Saturday": ["10:00-12:00"]}', NULL, NULL, 
+    ('Tanya Gurova', 'tanya.gurova@example.com', '789 Tutor Blvd', '11223', '07700900003', 'I’m Tanya, a physics tutor with a passion for helping students understand complex concepts. I enjoy hiking and spending time in nature.', NULL, NULL, 
     'https://images.unsplash.com/photo-1620065865072-6eb90f4df05e?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
     
-    ('Jason Warren', 'jason.warren@example.com', '321 Tutor Rd', '33445', '07700900004', 'Hello, I’m Jason, an English teacher with years of experience. I love reading classic literature and encouraging creativity in my students.', 
-    '{"Monday": ["09:00-10:00"], "Wednesday": ["11:00-12:00", "14:00-15:00"], "Friday": ["13:00-16:00"]}', NULL, NULL, 
+    ('Jason Warren', 'jason.warren@example.com', '321 Tutor Rd', '33445', '07700900004', 'Hello, I’m Jason, an English teacher with years of experience. I love reading classic literature and encouraging creativity in my students.', NULL, NULL, 
     'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
     
-    ('Josh Dixon', 'josh.dixon@example.com', '654 Tutor Ave', '55667', '07700900005', 'My name is Josh, and I specialize in teaching history. I believe in making learning fun through interactive lessons and discussions.', 
-    '{"Tuesday": ["10:00-11:30", "14:00-15:30"], "Thursday": ["12:00-14:00"], "Sunday": ["09:00-12:00"]}', NULL, NULL, 
+    ('Josh Dixon', 'josh.dixon@example.com', '654 Tutor Ave', '55667', '07700900005', 'My name is Josh, and I specialize in teaching history. I believe in making learning fun through interactive lessons and discussions.', NULL, NULL, 
     'https://images.unsplash.com/photo-1713947507130-227586ab3024?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
 
  INSERT INTO subjects (subject_name)
@@ -103,9 +97,9 @@ VALUES
 ('Will', 'will@zubi.com', '$2b$10$i4Fe4rb.TiFCbAWsk5DN4eeXj638oBilT3GaTVb/03xJ4/ugPlqvO', '456 Oak St', '54321', 25),
 ('Khalos', 'khalos@zubi.com', '$2b$10$103GJdg897zS8hVSahwgz.YbghROGGZLpksTfgUJ2KXH.3meh4sTO', '789 Pine St', '67890', 20);
 
-INSERT INTO sessions (session_time, status, fk_student_id, fk_tutor_id)
+INSERT INTO sessions (session_time, booking_status, fk_student_id, fk_tutor_id)
 VALUES 
-('2024-10-25 10:00:00', 'scheduled', 2, 1),  -- Will with Itziar
-('2024-10-26 14:00:00', 'scheduled', 2, 2),  -- Will with Ben
-('2024-10-27 09:00:00', 'scheduled', 3, 3);  -- Khalos with Tanya
+('2024-10-25 10:00:00', 'open', 2, 1),  -- Will with Itziar
+('2024-10-26 14:00:00', 'open', 2, 2),  -- Will with Ben
+('2024-10-27 09:00:00', 'open', 3, 3);  -- Khalos with Tanya
 
