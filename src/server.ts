@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 
 app.use("/tutors", tutorsRoutes);
 app.use("/subjects", subjectsRoutes);
-app.use("/login", authRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(port, () => {
   console.log(`Server started on port: ${port}`);
