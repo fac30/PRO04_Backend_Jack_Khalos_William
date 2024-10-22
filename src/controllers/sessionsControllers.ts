@@ -14,52 +14,66 @@ const createTutorAvailabilityController = (
   res: Response
 ) => {
   const { dateTime, tutorID } = req.body;
+
   if (!dateTime || !tutorID) {
     res.status(400).json({ message: "Please enter a date and time" });
-    return;
   }
-  createTutorAvailability(dateTime, tutorID);
-  res.status(201).json({ message: "Tutor availability created successfully" });
+
+  try {
+    createTutorAvailability(dateTime, tutorID);
+    res
+      .status(201)
+      .json({ message: "Tutor availability created successfully" });
+  } catch (error) {
+    console.error("Error creating tutor availability:", error);
+    throw new Error("Failed to create tutor availability");
+  }
 };
 
 const bookSessionController = (req: Request, res: Response) => {
   const { dateTime, tutorID } = req.body;
+
   if (!dateTime || !tutorID) {
     res
       .status(400)
-      .json({ message: "To book, please enter a date, time and tutor" });
+      .json({ message: "To book, please enter a date, time, and tutor" });
   }
 
-  const session: Session | undefined = findSession(dateTime, tutorID);
+  try {
+    const session: Session | undefined = findSession(dateTime, tutorID);
 
-  if (session === undefined) {
-    res.status(404).json({
-      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}.`,
-    });
-    return;
-  }
+    if (!session) {
+      throw new Error(
+        `No session found for time: ${dateTime} and tutor ID: ${tutorID}.`
+      );
+    }
 
-  if (session.booking_status === "booked") {
-    res.status(401).json({
-      message: `Session is already booked`,
-    });
-  } else {
+    if (session.booking_status === "booked") {
+      throw new Error(`Session is already booked`);
+    }
+
     bookSession(session);
-    res.status(201).json({
-      message: `Session booked`,
-    });
+    res.status(201).json({ message: `Session booked` });
+  } catch (error) {
+    console.error("Error booking session:", error);
+    throw new Error("Failed to book session");
   }
 };
 
 const getSessionsByTutorIdController = (req: Request, res: Response) => {
   const { tutorId } = req.body;
-  const allSessions = getSessionsByTutorId(tutorId);
-  if (allSessions.length < 1) {
-    res.status(404).json({
-      message: `No sessions found, does this tutor exist?`,
-    });
-  } else {
-    res.status(201).send(allSessions);
+
+  try {
+    const allSessions = getSessionsByTutorId(tutorId);
+
+    if (allSessions.length < 1) {
+      throw new Error(`No sessions found, does this tutor exist?`);
+    }
+
+    res.status(200).send(allSessions);
+  } catch (error) {
+    console.error("Error retrieving sessions:", error);
+    throw new Error("Failed to retrieve sessions");
   }
 };
 
