@@ -16,6 +16,4 @@ const getStudentByEmail = (email: string): User | null => {
   return student || null;
 };
 
-getStudentByEmail("khalos@zubi.com");
-
 export default getStudentByEmail;
