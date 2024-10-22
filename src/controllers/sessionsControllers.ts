@@ -53,9 +53,9 @@ const bookSessionController = (req: Request, res: Response): Response => {
 const getSessionsByTutorIdController = (req: Request, res: Response) => {
   const { tutorId } = req.body;
   const allSessions = getSessionsByTutorId(tutorId);
-  if (!allSessions) {
+  if (allSessions.length < 1) {
     return res.status(404).json({
-      message: `No sessions found.`,
+      message: `No sessions found, does this tutor exist?`,
     });
   } else {
     return res.status(201).send(allSessions);
