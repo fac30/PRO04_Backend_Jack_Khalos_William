@@ -34,7 +34,7 @@ const bookSessionController = (req: Request, res: Response) => {
 
   if (session === undefined) {
     res.status(404).json({
-      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}. It is undefined`,
+      message: `No session found for time: ${dateTime} and tutor ID: ${tutorID}.`,
     });
     return;
   }
