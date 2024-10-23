@@ -5,7 +5,8 @@ import { Request, Response } from "express";
 import { Session } from "../models/bookSession";
 
 interface CreateAvailabilityRequest {
-  dateTime: string;
+  start: string;
+  end: string;
   tutorID: number;
 }
 
@@ -13,14 +14,14 @@ const createTutorAvailabilityController = (
   req: Request<{}, {}, CreateAvailabilityRequest>,
   res: Response
 ) => {
-  const { dateTime, tutorID } = req.body;
+  const { start, end, tutorID } = req.body;
 
-  if (!dateTime || !tutorID) {
+  if (!start || !end || !tutorID) {
     res.status(400).json({ message: "Please enter a date and time" });
   }
 
   try {
-    createTutorAvailability(dateTime, tutorID);
+    createTutorAvailability(start, end, tutorID);
     res
       .status(201)
       .json({ message: "Tutor availability created successfully" });

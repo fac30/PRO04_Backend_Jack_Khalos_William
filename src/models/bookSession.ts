@@ -10,7 +10,7 @@ interface Session {
 }
 
 const find_session = zubiDB.prepare(
-  `SELECT * FROM sessions WHERE session_time = ? AND fk_tutor_id = ?`
+  `SELECT * FROM sessions WHERE start = ? AND fk_tutor_id = ?`
 );
 
 const book_session = zubiDB.prepare(/*SQL*/ `
@@ -21,7 +21,7 @@ const book_session = zubiDB.prepare(/*SQL*/ `
 
 const findSession = (time: string, tutor: number): Session | undefined => {
   const result = find_session.get(time, tutor);
-  return result as Session | undefined; 
+  return result as Session | undefined;
 };
 
 const bookSession = (session: Session) => {
