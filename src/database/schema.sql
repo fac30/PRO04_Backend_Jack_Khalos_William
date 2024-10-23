@@ -71,6 +71,7 @@ INSERT INTO tutors (full_name, email, address, postal_code, phone_number, descri
  VALUES
  ('Itziar Cantero', 'itziar.cantero@example.com', '456 Tutor St', '54321', '07700900002', 'Hi! I’m Itziar and I’m so excited to start teaching Computer Science. I have a Master’s from MIT and like to sneak everywhere.', NULL, NULL, 
     'https://images.unsplash.com/photo-1461039088886-b5c863279a0e?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+
     ('Ben Craddock', 'ben.craddock@example.com', '123 Tutor Lane', '12345', '07700900001', 'I’m Ben, a mathematician with a degree from the University of Oxford. I like riding horses and travelling around Norfolk.', NULL, NULL, 
     'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
     
@@ -99,7 +100,62 @@ VALUES
 
 INSERT INTO sessions (session_time, booking_status, fk_student_id, fk_tutor_id)
 VALUES 
-('2024-10-25 10:00:00', 'open', 2, 1),  -- Will with Itziar
-('2024-10-26 14:00:00', 'open', 2, 2),  -- Will with Ben
-('2024-10-27 09:00:00', 'open', 3, 3);  -- Khalos with Tanya
+-- Sessions for Itziar (Tutor ID: 1)
+('2024-10-23 10:00:00', 'open', NULL, 1),
+('2024-10-24 11:00:00', 'open', 1, 1),
+('2024-10-25 14:00:00', 'open', 2, 1),
+('2024-10-26 09:00:00', 'open', NULL, 1),
+('2024-10-27 13:00:00', 'open', 3, 1),
+('2024-10-28 15:00:00', 'open', NULL, 1),
+('2024-10-29 12:00:00', 'open', 2, 1),
+('2024-10-30 10:30:00', 'open', 1, 1),
+('2024-10-31 14:30:00', 'open', NULL, 1),
+('2024-11-01 11:00:00', 'open', 3, 1),
 
+-- Sessions for Ben (Tutor ID: 2)
+('2024-10-23 10:30:00', 'open', NULL, 2),
+('2024-10-24 12:00:00', 'open', 1, 2),
+('2024-10-25 15:30:00', 'open', 3, 2),
+('2024-10-26 11:30:00', 'open', NULL, 2),
+('2024-10-27 10:00:00', 'open', 2, 2),
+('2024-10-28 12:30:00', 'open', NULL, 2),
+('2024-10-29 09:00:00', 'open', 1, 2),
+('2024-10-30 14:00:00', 'open', 3, 2),
+('2024-10-31 15:00:00', 'open', NULL, 2),
+('2024-11-01 13:30:00', 'open', 2, 2),
+
+-- Sessions for Tanya (Tutor ID: 3)
+('2024-10-23 09:00:00', 'open', 1, 3),
+('2024-10-24 13:00:00', 'open', NULL, 3),
+('2024-10-25 16:00:00', 'open', 2, 3),
+('2024-10-26 09:30:00', 'open', NULL, 3),
+('2024-10-27 14:30:00', 'open', 3, 3),
+('2024-10-28 11:00:00', 'open', NULL, 3),
+('2024-10-29 10:30:00', 'open', 1, 3),
+('2024-10-30 15:00:00', 'open', 2, 3),
+('2024-10-31 12:00:00', 'open', NULL, 3),
+('2024-11-01 10:00:00', 'open', 3, 3),
+
+-- Sessions for Jason (Tutor ID: 4)
+('2024-10-23 11:00:00', 'open', 1, 4),
+('2024-10-24 14:30:00', 'open', NULL, 4),
+('2024-10-25 12:30:00', 'open', 2, 4),
+('2024-10-26 15:30:00', 'open', NULL, 4),
+('2024-10-27 09:00:00', 'open', 3, 4),
+('2024-10-28 16:00:00', 'open', NULL, 4),
+('2024-10-29 11:00:00', 'open', 1, 4),
+('2024-10-30 14:00:00', 'open', 2, 4),
+('2024-10-31 10:30:00', 'open', NULL, 4),
+('2024-11-01 12:00:00', 'open', 3, 4),
+
+-- Sessions for Josh (Tutor ID: 5)
+('2024-10-23 12:00:00', 'open', NULL, 5),
+('2024-10-24 15:00:00', 'open', 1, 5),
+('2024-10-25 11:00:00', 'open', NULL, 5),
+('2024-10-26 10:00:00', 'open', 2, 5),
+('2024-10-27 13:30:00', 'open', NULL, 5),
+('2024-10-28 09:30:00', 'open', 3, 5),
+('2024-10-29 16:00:00', 'open', NULL, 5),
+('2024-10-30 12:30:00', 'open', 1, 5),
+('2024-10-31 11:30:00', 'open', NULL, 5),
+('2024-11-01 14:30:00', 'open', 2, 5);
