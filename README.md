@@ -379,20 +379,22 @@ Example body:
 ```json
 [
   {
-    "id": 4,
-    "created_at": "2024-10-23 08:44:34",
-    "session_time": "2024-10-27 09:00:00",
-    "booking_status": "open",
-    "fk_student_id": null,
-    "fk_tutor_id": 3
+    "id": 1,
+    "created_at": "2024-10-23 10:44:10",
+    "start": "2024-10-25 09:00:00",
+    "end": "2024-10-25 09:30:00",
+    "booking_status": "booked",
+    "fk_student_id": 1,
+    "fk_tutor_id": 1
   },
   {
-    "id": 6,
-    "created_at": "2024-10-23 09:07:59",
-    "session_time": "2024-10-27 09:00:00",
+    "id": 2,
+    "created_at": "2024-10-23 10:44:10",
+    "start": "2024-10-25 14:00:00",
+    "end": "2024-10-25 14:30:00",
     "booking_status": "open",
     "fk_student_id": null,
-    "fk_tutor_id": 3
+    "fk_tutor_id": 1
   }
 ]
 ```
