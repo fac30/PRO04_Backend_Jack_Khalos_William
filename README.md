@@ -328,13 +328,23 @@ Example request body:
 - Example request: `http://localhost:3000/booking/session`
 - Description: Changes a session from **open** to **booked** if that session exists and is unbooked. If session doesn't exist or is already booked, responds with error.
 
+Example body:
+
+```json
+{
+  "start": "2024-10-25 10:00:00",
+  "end": "2024-10-25 11:00:00",
+  "tutorID": "7"
+}
+```
+
 #### Example responses:
 
 - If successful:
 
 ```json
 {
-  "message": "Session booked at 2024-10-27 10:00:00 with tutor ID 3"
+  "message": "Session booked at 2024-10-25 14:00:00 until 2024-10-25 14:30:00 with tutor ID 1"
 }
 ```
 
