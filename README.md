@@ -406,7 +406,7 @@ Below is an example of a unit test and an integration test:
 
 `getTutor.test.ts`
 
-```
+```js
 describe("getTutorById should return tutor with given id argument.", ()=>{
     it("should return the tutor of id = 1", ()=>{
         const tutor: Tutor = {
