@@ -32,9 +32,9 @@ const createTutorAvailabilityController = (
 };
 
 const bookSessionController = (req: Request, res: Response) => {
-  const { dateTime, tutorID } = req.body;
+  const { start, end, tutorID } = req.body;
 
-  if (!dateTime || !tutorID) {
+  if (!start || !end || !tutorID) {
     res
       .status(400)
       .json({ message: "To book, please enter a date, time, and tutor" });
@@ -42,11 +42,11 @@ const bookSessionController = (req: Request, res: Response) => {
   }
 
   try {
-    const session: Session | undefined = findSession(dateTime, tutorID);
+    const session: Session | undefined = findSession(start, end, tutorID);
 
     if (!session) {
       throw new Error(
-        `No session found for time: ${dateTime} and tutor ID: ${tutorID}.`
+        `No session found for time: ${start} and tutor ID: ${tutorID}.`
       );
     }
 
@@ -56,7 +56,7 @@ const bookSessionController = (req: Request, res: Response) => {
 
     bookSession(session);
     res.status(201).json({
-      message: `Session booked at ${dateTime} with tutor ID ${tutorID}`,
+      message: `Session booked at ${start} until ${end} with tutor ID ${tutorID}`,
     });
   } catch (error) {
     console.error("Error booking session:", error);
