@@ -2,6 +2,7 @@ import express from "express";
 import tutorsRoutes from "./routes/tutorsRoutes.js";
 import subjectsRoutes from "./routes/subjectsRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import sessionsRoutes from "./routes/sessionsRoutes.js";
 import dotenv from "dotenv";
 import passport from "passport";
 import loadStrategy from "./auth/strategy.js";
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 app.use("/tutors", tutorsRoutes);
 app.use("/subjects", subjectsRoutes);
 app.use("/login", authRoutes);
+app.use("/booking", sessionsRoutes);
 
 app.listen(port, () => {
   console.log(`Server started on port: ${port}`);

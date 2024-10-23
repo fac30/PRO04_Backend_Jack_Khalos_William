@@ -127,6 +127,8 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 
 ## Endpoints
 
+### **TUTOR ENDPOINTS**
+
 ### Get All Tutors
 
 - Endpoint: GET /tutors
@@ -250,6 +252,8 @@ Example request body:
 }
 ```
 
+### **AUTHENTICATION ENDPOINTS**
+
 ### Check Authentication
 
 - Endpoint: GET /login/check-auth
@@ -280,6 +284,129 @@ Example request body:
 }
 ```
 
+### **SLOTS AND SESSIONS ENDPOINTS**
+
+### Create Vacant Tutor Slot
+
+- Endpoint: POST /booking/newslot
+- Example request: `http://localhost:3000/booking/newslot`
+- Description: Creates a new vacant tutor slot in the db with a given date and time
+- Parameters:
+  - Body: JSON object
+
+Example request body:
+
+```json
+{
+  "start": "2024-10-27 09:00:00",
+  "end": "2024-10-27 09:30:00",
+  "tutorID": "3"
+}
+```
+
+#### Example responses:
+
+- If successful:
+
+```json
+{
+  "message": "Tutor availability created successfully, starting at 2024-10-27 10:00:00 and finishing at 2024-10-27 12:00:00"
+}
+```
+
+- If not
+
+```json
+{
+  "message": "Please enter a date and time"
+}
+```
+
+### Book New Session
+
+- Endpoint: POST /booking/newsession
+- Example request: `http://localhost:3000/booking/session`
+- Description: Changes a session from **open** to **booked** if that session exists and is unbooked. If session doesn't exist or is already booked, responds with error.
+
+Example body:
+
+```json
+{
+  "start": "2024-10-25 10:00:00",
+  "end": "2024-10-25 11:00:00",
+  "tutorID": "7"
+}
+```
+
+#### Example responses:
+
+- If successful:
+
+```json
+{
+  "message": "Session booked at 2024-10-25 14:00:00 until 2024-10-25 14:30:00 with tutor ID 1"
+}
+```
+
+- If session is already booked
+
+```json
+{
+  "message": "Error: Session is already booked"
+}
+```
+
+- If session doesn't exist
+
+```json
+{
+  "message": "Error: No session found for time: 2024-10-27 11:00:00 and tutor ID: 3."
+}
+```
+
+### Show All Slots for a Tutor
+
+- Endpoint: GET /booking/tutorslots
+- Example request: `http://localhost:3000/booking/tutorslots?id=2`
+- Description: Retrieves all slots (open and booked associate with a tutor)
+- Parameters:
+  - Query: Id
+
+#### Example responses:
+
+- If successful:
+
+```json
+[
+  {
+    "id": 1,
+    "created_at": "2024-10-23 10:44:10",
+    "start": "2024-10-25 09:00:00",
+    "end": "2024-10-25 09:30:00",
+    "booking_status": "booked",
+    "fk_student_id": 1,
+    "fk_tutor_id": 1
+  },
+  {
+    "id": 2,
+    "created_at": "2024-10-23 10:44:10",
+    "start": "2024-10-25 14:00:00",
+    "end": "2024-10-25 14:30:00",
+    "booking_status": "open",
+    "fk_student_id": null,
+    "fk_tutor_id": 1
+  }
+]
+```
+
+- If not successful
+
+```json
+{
+  "message": "Error: No sessions found, does this tutor exist?"
+}
+```
+
 ## Testing
 
 To conduct unit testing and integration testing for the routes, controllers and models, we use mocha, chai and supertest. These tools allow us to simulate HTTP requests, validate responses, and verify the correctness of the underlying project logic.
@@ -292,7 +419,7 @@ Below is an example of a unit test and an integration test:
 
 `getTutor.test.ts`
 
-```
+```js
 describe("getTutorById should return tutor with given id argument.", ()=>{
     it("should return the tutor of id = 1", ()=>{
         const tutor: Tutor = {
