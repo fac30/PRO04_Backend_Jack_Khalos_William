@@ -16,7 +16,7 @@ router.get("/cookies", (req, res) => {
   res.cookie("hello", "world", { maxAge: 600000, signed: true });
   console.log(req.session);
   console.log(req.session.id);
-  req.session.visited = true;
+  //req.session.visited = true;
   res.send({ message: "Hello" });
 });
 

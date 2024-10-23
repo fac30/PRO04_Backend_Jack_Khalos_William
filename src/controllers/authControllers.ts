@@ -13,7 +13,7 @@ const authController = (req: Request, res: Response, next: Function) => {
   } else {
     res.json({ message: "you are not logged in" });
   }
-  return req.user;
+  return;
 };
 
 const logoutController = (req: Request, res: Response, next: NextFunction) => {
