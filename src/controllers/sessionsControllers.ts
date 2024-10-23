@@ -22,11 +22,9 @@ const createTutorAvailabilityController = (
 
   try {
     createTutorAvailability(start, end, tutorID);
-    res
-      .status(201)
-      .json({
-        message: `Tutor availability created successfully, starting at ${start} and finishing at ${end}`,
-      });
+    res.status(201).json({
+      message: `Tutor availability created successfully, starting at ${start} and finishing at ${end}`,
+    });
   } catch (error) {
     console.error("Error creating tutor availability:", error);
     throw new Error("Failed to create tutor availability");
@@ -78,10 +76,10 @@ const getSessionsByTutorIdController = (req: Request, res: Response) => {
       throw new Error(`No sessions found, does this tutor exist?`);
     }
 
-    res.status(200).send(allSessions);
+    res.status(200).json(allSessions);
   } catch (error) {
     console.error("Error retrieving sessions:", error);
-    res.status(401).send({
+    res.status(401).json({
       message: `${error}`,
     });
   }
