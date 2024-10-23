@@ -2,9 +2,9 @@ import express from "express";
 import routes from "./routes/indexRoutes.js";
 import dotenv from "dotenv";
 import passport from "passport";
-import loadStrategy from "./auth/strategy.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import "./auth/strategy.js";
 
 dotenv.config();
 
@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(cookieParser("zubiSecretKey"));
 app.use(passport.initialize());
 app.use(passport.session());
-loadStrategy();
+
 const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
