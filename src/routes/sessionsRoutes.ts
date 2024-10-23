@@ -7,8 +7,8 @@ import {
 
 const router = Router();
 
-router.post("/newtutorslot", createTutorAvailabilityController);
-router.post("/newsession", bookSessionController);
-router.get("/alltutorsessions", getSessionsByTutorIdController);
+router.post("/newslot", createTutorAvailabilityController);
+router.post("/session", bookSessionController);
+router.get("/tutorslots", getSessionsByTutorIdController);
 
 export default router;

@@ -127,6 +127,8 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 
 ## Endpoints
 
+### **TUTOR ENDPOINTS**
+
 ### Get All Tutors
 
 - Endpoint: GET /tutors
@@ -250,6 +252,8 @@ Example request body:
 }
 ```
 
+### **AUTHENTICATION ENDPOINTS**
+
 ### Check Authentication
 
 - Endpoint: GET /login/check-auth
@@ -279,6 +283,114 @@ Example request body:
   "message": "Not authenticated"
 }
 ```
+
+### **SLOTS AND SESSIONS ENDPOINTS**
+
+### Create Vacant Tutor Slot
+
+- Endpoint: POST /booking/newslot
+- Example request: `http://localhost:3000/booking/newslot`
+- Description: Creates a new vacant tutor slot in the db with a given date and time
+- Parameters:
+  - Body: JSON object
+
+Example request body:
+
+```json
+{
+  "dateTime": "2024-10-27 09:00:00",
+  "tutorID": "3"
+}
+```
+
+#### Example responses:
+
+- If successful:
+
+```json
+{
+  "message": "Tutor availability created successfully"
+}
+```
+
+- If not
+
+```json
+{
+  "message": "Please enter a date and time"
+}
+```
+
+### Book New Session
+
+- Endpoint: POST /booking/newsession
+- Example request: `http://localhost:3000/booking/session`
+- Description: Changes a session from **open** to **booked** if that session exists and is unbooked. If session doesn't exist or is already booked, responds with error.
+
+#### Example responses:
+
+- If successful:
+
+```json
+{
+  "message": "Session booked at 2024-10-27 10:00:00 with tutor ID 3"
+}
+```
+
+- If session is already booked
+
+```json
+{
+  "message": "Error: Session is already booked"
+}
+```
+
+- If session doesn't exist
+
+```json
+{
+  "message": "Error: No session found for time: 2024-10-27 11:00:00 and tutor ID: 3."
+}
+```
+
+### Show All Slots for a Tutor
+
+- Endpoint: POST /booking/tutorslots
+- Example request: `http://localhost:3000/booking/tutorslots`
+- Description: Retrieves all slots (open and booked associate with a tutor)
+- Parameters:
+  - Body: JSON object
+
+Example request body:
+
+```json
+{
+  "dateTime": "2024-10-27 09:00:00",
+  "tutorID": "3"
+}
+```
+
+#### Example responses:
+
+- If successful:
+
+```json
+{
+  "message": "Tutor availability created successfully"
+}
+```
+
+- If not
+
+```json
+{
+  "message": "Please enter a date and time"
+}
+```
+
+router.post("/newtutorslot", createTutorAvailabilityController);
+router.post("/newsession", bookSessionController);
+router.get("/alltutorsessions", getSessionsByTutorIdController);
 
 ## Testing
 

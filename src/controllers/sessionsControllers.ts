@@ -37,6 +37,7 @@ const bookSessionController = (req: Request, res: Response) => {
     res
       .status(400)
       .json({ message: "To book, please enter a date, time, and tutor" });
+    return;
   }
 
   try {
@@ -53,10 +54,14 @@ const bookSessionController = (req: Request, res: Response) => {
     }
 
     bookSession(session);
-    res.status(201).json({ message: `Session booked` });
+    res.status(201).json({
+      message: `Session booked at ${dateTime} with tutor ID ${tutorID}`,
+    });
   } catch (error) {
     console.error("Error booking session:", error);
-    throw new Error("Failed to book session");
+    res.status(401).json({
+      message: `${error}`,
+    });
   }
 };
 
