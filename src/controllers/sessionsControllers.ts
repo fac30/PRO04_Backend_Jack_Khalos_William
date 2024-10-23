@@ -78,7 +78,9 @@ const getSessionsByTutorIdController = (req: Request, res: Response) => {
     res.status(200).send(allSessions);
   } catch (error) {
     console.error("Error retrieving sessions:", error);
-    throw new Error("Failed to retrieve sessions");
+    res.status(401).send({
+      message: `${error}`,
+    });
   }
 };
 

@@ -355,42 +355,44 @@ Example request body:
 
 ### Show All Slots for a Tutor
 
-- Endpoint: POST /booking/tutorslots
-- Example request: `http://localhost:3000/booking/tutorslots`
+- Endpoint: GET /booking/tutorslots
+- Example request: `http://localhost:3000/booking/tutorslots?id=2`
 - Description: Retrieves all slots (open and booked associate with a tutor)
 - Parameters:
-  - Body: JSON object
-
-Example request body:
-
-```json
-{
-  "dateTime": "2024-10-27 09:00:00",
-  "tutorID": "3"
-}
-```
+  - Query: Id
 
 #### Example responses:
 
 - If successful:
 
 ```json
-{
-  "message": "Tutor availability created successfully"
-}
+[
+  {
+    "id": 4,
+    "created_at": "2024-10-23 08:44:34",
+    "session_time": "2024-10-27 09:00:00",
+    "booking_status": "open",
+    "fk_student_id": null,
+    "fk_tutor_id": 3
+  },
+  {
+    "id": 6,
+    "created_at": "2024-10-23 09:07:59",
+    "session_time": "2024-10-27 09:00:00",
+    "booking_status": "open",
+    "fk_student_id": null,
+    "fk_tutor_id": 3
+  }
+]
 ```
 
 - If not
 
 ```json
 {
-  "message": "Please enter a date and time"
+  "message": "Error: No sessions found, does this tutor exist?"
 }
 ```
-
-router.post("/newtutorslot", createTutorAvailabilityController);
-router.post("/newsession", bookSessionController);
-router.get("/alltutorsessions", getSessionsByTutorIdController);
 
 ## Testing
 
