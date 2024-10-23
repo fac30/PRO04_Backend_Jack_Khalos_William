@@ -7,7 +7,7 @@ declare global {
   namespace Express {
     interface User {
       id: number;
-      useremail: string;
+      email: string;
     }
   }
 }
@@ -15,15 +15,15 @@ declare global {
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "useremail",
+      usernameField: "email",
     },
     async (
-      useremail: string,
+      email: string,
       password: string,
       done: (error: any, user?: Express.User | false) => void
     ) => {
       try {
-        const user = await getStudentByEmail(useremail);
+        const user = await getStudentByEmail(email);
         if (!user) {
           throw new Error("User not found.");
         }
@@ -31,9 +31,9 @@ passport.use(
         if (!match) {
           throw new Error("Invalid password.");
         }
-        const { id, email } = user;
-        const User = { id, useremail: email };
-        return done(null, User);
+        /* const { id, email, full_name } = user;
+        const User = { id, email, name: full_name }; */
+        return done(null, user);
       } catch (err) {
         if (err instanceof Error) {
           done(err, false);
@@ -45,19 +45,19 @@ passport.use(
   )
 );
 
-passport.serializeUser((User: Express.User, done) => {
-  done(null, User);
+passport.serializeUser((user: Express.User, done) => {
+  done(null, user.email);
 });
 
-passport.deserializeUser(async (User: Express.User, done) => {
+passport.deserializeUser(async (email: string, done) => {
   try {
-    const findUser: any = await getStudentByEmail(User.useremail);
-    if (!findUser) {
+    const user: any = await getStudentByEmail(email);
+    if (!user) {
       throw new Error("User not found");
     }
-    const { id, email } = findUser;
-    const foundUser = { id, email };
-    done(null, foundUser as any);
+    /*  const { id, email } = findUser;
+    const foundUser = { id, email }; */
+    done(null, user);
   } catch (err) {
     if (err instanceof Error) {
       done(err, null);
