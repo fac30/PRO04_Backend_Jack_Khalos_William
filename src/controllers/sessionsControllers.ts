@@ -66,10 +66,10 @@ const bookSessionController = (req: Request, res: Response) => {
 };
 
 const getSessionsByTutorIdController = (req: Request, res: Response) => {
-  const { tutorId } = req.body;
+  const id: number = Number(req.query.id);
 
   try {
-    const allSessions = getSessionsByTutorId(tutorId);
+    const allSessions = getSessionsByTutorId(id);
 
     if (allSessions.length < 1) {
       throw new Error(`No sessions found, does this tutor exist?`);
