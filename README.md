@@ -386,7 +386,7 @@ Example request body:
 ]
 ```
 
-- If not
+- If not successful
 
 ```json
 {
