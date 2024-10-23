@@ -298,7 +298,8 @@ Example request body:
 
 ```json
 {
-  "dateTime": "2024-10-27 09:00:00",
+  "start": "2024-10-27 09:00:00",
+  "end": "2024-10-27 09:30:00",
   "tutorID": "3"
 }
 ```
@@ -309,7 +310,7 @@ Example request body:
 
 ```json
 {
-  "message": "Tutor availability created successfully"
+  "message": "Tutor availability created successfully, starting at 2024-10-27 10:00:00 and finishing at 2024-10-27 12:00:00"
 }
 ```
 

@@ -24,7 +24,9 @@ const createTutorAvailabilityController = (
     createTutorAvailability(start, end, tutorID);
     res
       .status(201)
-      .json({ message: "Tutor availability created successfully" });
+      .json({
+        message: `Tutor availability created successfully, starting at ${start} and finishing at ${end}`,
+      });
   } catch (error) {
     console.error("Error creating tutor availability:", error);
     throw new Error("Failed to create tutor availability");
