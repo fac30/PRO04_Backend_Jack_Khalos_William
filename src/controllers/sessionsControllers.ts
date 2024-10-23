@@ -10,7 +10,7 @@ interface CreateAvailabilityRequest {
   tutorID: number;
 }
 
-const createTutorAvailabilityController = (
+const createTutorAvailabilityController = async (
   req: Request<{}, {}, CreateAvailabilityRequest>,
   res: Response
 ) => {
@@ -21,7 +21,7 @@ const createTutorAvailabilityController = (
   }
 
   try {
-    createTutorAvailability(start, end, tutorID);
+    await createTutorAvailability(start, end, tutorID);
     res.status(201).json({
       message: `Tutor availability created successfully, starting at ${start} and finishing at ${end}`,
     });
@@ -31,7 +31,7 @@ const createTutorAvailabilityController = (
   }
 };
 
-const bookSessionController = (req: Request, res: Response) => {
+const bookSessionController = async (req: Request, res: Response) => {
   const { start, end, tutorID } = req.body;
 
   if (!start || !end || !tutorID) {
@@ -42,7 +42,7 @@ const bookSessionController = (req: Request, res: Response) => {
   }
 
   try {
-    const session: Session | undefined = findSession(start, end, tutorID);
+    const session: Session | undefined = await findSession(start, end, tutorID);
 
     if (!session) {
       throw new Error(
@@ -66,11 +66,11 @@ const bookSessionController = (req: Request, res: Response) => {
   }
 };
 
-const getSessionsByTutorIdController = (req: Request, res: Response) => {
+const getSessionsByTutorIdController = async (req: Request, res: Response) => {
   const id: number = Number(req.query.id);
 
   try {
-    const allSessions = getSessionsByTutorId(id);
+    const allSessions = await getSessionsByTutorId(id);
 
     if (allSessions.length < 1) {
       throw new Error(`No sessions found, does this tutor exist?`);
