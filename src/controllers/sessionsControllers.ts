@@ -1,8 +1,8 @@
-import createTutorAvailability from "../models/createSession";
-import { bookSession, findSession } from "../models/bookSession";
-import { getSessionsByTutorId } from "../models/getSession";
+import createTutorAvailability from "../models/createSession.js";
+import { bookSession, findSession } from "../models/bookSession.js";
+import { getSessionsByTutorId } from "../models/getSession.js";
 import { Request, Response } from "express";
-import { Session } from "../models/bookSession";
+import { Session } from "../models/bookSession.js";
 
 interface CreateAvailabilityRequest {
   start: string;
