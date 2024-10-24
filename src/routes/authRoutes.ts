@@ -1,17 +1,15 @@
 import express from "express";
 import {
   loginController,
-  isAuthenticated,
+  authController,
+  logoutController,
 } from "../controllers/authControllers";
+import passport from "passport";
 
 const router = express.Router();
 
-router.post("/", (req, res, next) => loginController(req, res, next));
-router.get("/check-auth", isAuthenticated, (req, res) => {
-  res.json({
-    authenticated: true,
-    user: req.user,
-  });
-});
+router.get("/auth", authController);
+router.post("/auth/login", passport.authenticate("local"), loginController);
+router.post("/auth/logout", logoutController);
 
 export default router;

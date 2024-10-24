@@ -1,4 +1,4 @@
-import passport from "passport";
+import passport, { use } from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 import getStudentByEmail from "../models/getPassword";
@@ -8,56 +8,65 @@ declare global {
     interface User {
       id: number;
       email: string;
-      password_hash: string;
     }
   }
 }
 
-const loadStrategy = () => {
-  passport.use(
-    new LocalStrategy(
-      {
-        usernameField: "email",
-      },
-      async (email, password, cb) => {
-        try {
-          const user = getStudentByEmail(email);
-          if (!user) {
-            return cb(null, false, {
-              message: "Incorrect email or password.",
-            });
-          }
-
-          const match = await bcrypt.compare(password, user.password_hash);
-          if (!match) {
-            return cb(null, false, {
-              message: "Incorrect email or password.",
-            });
-          }
-
-          return cb(null, user);
-        } catch (err) {
-          return cb(err);
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "email",
+    },
+    async (
+      email: string,
+      password: string,
+      done: (error: any, user?: Express.User | false) => void
+    ) => {
+      try {
+        const user = await getStudentByEmail(email);
+        if (!user) {
+          throw new Error("User not found.");
+        }
+        const match = await bcrypt.compare(password, user.password_hash);
+        if (!match) {
+          throw new Error("Invalid password.");
+        }
+        const foundUser = {
+          id: user.id,
+          email: user.email,
+          name: user.full_name,
+        };
+        return done(null, foundUser);
+      } catch (err) {
+        if (err instanceof Error) {
+          done(err, false);
+        } else {
+          done("Incorrect credentials.", false);
         }
       }
-    )
-  );
-
-  passport.serializeUser((user: Express.User, done) => {
-    done(null, user.email);
-  });
-
-  passport.deserializeUser(async (email: string, done) => {
-    try {
-      const user = getStudentByEmail(email);
-      if (!user) {
-        return done(new Error("User not found"));
-      }
-      done(null, user);
-    } catch (err) {
-      done(err);
     }
-  });
-};
+  )
+);
 
-export default loadStrategy;
+passport.serializeUser((user: Express.User, done) => {
+  done(null, user.email);
+});
+
+passport.deserializeUser(async (email: string, done) => {
+  try {
+    const user: any = await getStudentByEmail(email);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const foundUser = { id: user.id, email: user.email, name: user.full_name };
+    done(null, foundUser);
+  } catch (err) {
+    if (err instanceof Error) {
+      done(err, null);
+    } else {
+      done("Incorrect credentials.", null);
+    }
+  }
+});
+
+export default passport;
