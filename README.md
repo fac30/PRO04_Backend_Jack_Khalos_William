@@ -9,9 +9,10 @@ A brief description of your project.
 - [Branches](#branches)
 - [Running Server](#server)
 - [Committing](#committing)
+- [Endpoints](#endpoints)
+- [Storing Session](#storing-session)
 - [Testing](#testing)
 - [File Structure](#file-structure)
-- [Endpoints](#endpoints)
 - [Deployment](#deployment)
 - [Index](#index)
 
@@ -213,8 +214,8 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 
 ### Log in
 
-- Endpoint: POST /login
-- Example request: `http://localhost:3000/login`
+- Endpoint: POST /auth/login
+- Example request: `http://localhost:3000/auth/login`
 - Description: Authenticates login using provided password
 - Parameters:
   - Body: JSON object
@@ -234,13 +235,9 @@ Example request body:
 
 ```json
 {
-  "message": "Login successful",
-  "user": {
-    "id": 3,
-    "full_name": "Khalos",
-    "email": "khalos@zubi.com",
-    "password_hash": "$21p0$jansdfj&&hbnsaf.YbghROGGZLpksTfgUJ2KXH.3meh4sTO"
-  }
+  "id": 3,
+  "full_name": "Khalos",
+  "email": "khalos@zubi.com"
 }
 ```
 
@@ -252,36 +249,43 @@ Example request body:
 }
 ```
 
+### Log out
+
+- Endpoint: POST /auth/logout
+- Example request: `http://localhost:3000/auth/logout`
+- Description: Checks user is logged in and logs the user out by clearing session on the server.
+- Parameters:
+  - Body: JSON object
+
+Example request body:
+
+```json
+{
+  "username": "khalos@zubi.com",
+  "password": "jj"
+}
+```
+
 ### **AUTHENTICATION ENDPOINTS**
 
 ### Check Authentication
 
-- Endpoint: GET /login/check-auth
-- Example request: `http://localhost:3000/login/check-auth`
-- Description: Checks if user has previously logged in, using cookies stored in the browser or Postman/Insomnia
+- Endpoint: GET /auth
+- Example request: `http://localhost:3000/auth`
+- Description: Checks if the user is logged in by using user cookie and session data.
 
 #### Example responses:
 
 - If authenticated:
 
 ```json
-{
-  "authenticated": true,
-  "user": {
-    "id": 3,
-    "full_name": "Khalos",
-    "email": "khalos@zubi.com",
-    "password_hash": "$2b$10$324312123.asdfasdfahsdfhsannn.3meh4sTO"
-  }
-}
+{ "message": "You are logged in" }
 ```
 
 - If not
 
 ```json
-{
-  "message": "Not authenticated"
-}
+{ "message": "You are not logged in" }
 ```
 
 ### **SLOTS AND SESSIONS ENDPOINTS**
@@ -406,6 +410,30 @@ Example body:
   "message": "Error: No sessions found, does this tutor exist?"
 }
 ```
+
+## Storing Session
+
+In this section, we will explain how to configure cookie settings when using express-session in an Express application.
+
+```
+session({
+    secret: "zubiSecretKey", // Used to sign the session ID cookie
+    resave: false, // Prevents session being saved back to the store if it was not modified
+    saveUninitialized: false, // Ensures sessions are only saved if they are new and not modified
+    cookie: {
+      secure: false, // Set to `true` if using HTTPS for ensuring cookie is only sent over HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // The lifetime of the cookie in milliseconds (1 day in this case)
+      sameSite: "strict", // Ensures that the cookie is not sent along with requests initiated by third-party websites
+      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie (for security purposes)
+```
+
+- **secure**: Set this to true when serving the application over HTTPS. This ensures that the cookie is only sent over secure connections, protecting it from being intercepted during transmission.
+
+- **maxAge**: Defines how long the cookie should last before it expires. In this case, it's set to 24 _ 60 _ 60 \* 1000 milliseconds, which equals one day. After the cookie expires, the user will be logged out automatically.
+
+- **sameSite**: Controls whether the browser should send the cookie along with cross-site requests. Setting it to "strict" means the cookie will only be sent for requests that originate from the same site. This provides protection against CSRF (Cross-Site Request Forgery) attacks.
+
+- **httpOnly**: This setting ensures that the cookie cannot be accessed through client-side JavaScript. It's a security feature to prevent certain attacks, such as XSS (Cross-Site Scripting).
 
 ## Testing
 
