@@ -31,9 +31,12 @@ passport.use(
         if (!match) {
           throw new Error("Invalid password.");
         }
-        /* const { id, email, full_name } = user;
-        const User = { id, email, name: full_name }; */
-        return done(null, user);
+        const foundUser = {
+          id: user.id,
+          email: user.email,
+          name: user.full_name,
+        };
+        return done(null, foundUser);
       } catch (err) {
         if (err instanceof Error) {
           done(err, false);
@@ -55,9 +58,8 @@ passport.deserializeUser(async (email: string, done) => {
     if (!user) {
       throw new Error("User not found");
     }
-    /*  const { id, email } = findUser;
-    const foundUser = { id, email }; */
-    done(null, user);
+    const foundUser = { id: user.id, email: user.email, name: user.full_name };
+    done(null, foundUser);
   } catch (err) {
     if (err instanceof Error) {
       done(err, null);
