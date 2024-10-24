@@ -11,13 +11,10 @@ const loginController = (req: Request, res: Response) => {
 };
 
 const authController = (req: Request, res: Response, next: Function) => {
-  console.log(req.user);
-  console.log("");
-  console.log(req.session);
   if (req.user) {
-    res.status(200).json({ message: "you are logged in" });
+    res.status(200).json({ message: "You are logged in" });
   } else {
-    res.json({ message: "you are not logged in" });
+    res.status(401).json({ message: "You are not logged in" });
   }
   return;
 };
@@ -32,7 +29,10 @@ const logoutController = (req: Request, res: Response, next: NextFunction) => {
         res.status(400).json({ message: "There was an error logging out." });
         return;
       }
-      res.status(200).json({ message: "You have successfully logged out." });
+      res
+        .status(200)
+        .clearCookie("connect.sid")
+        .json({ message: "You have successfully logged out." });
     });
   }
   return;
