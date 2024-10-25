@@ -6,7 +6,7 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/subjects", async (req, res) => {
   const id = req.query.id;
 
   if (id) {
