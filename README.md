@@ -11,6 +11,7 @@ A brief description of your project.
 - [Committing](#committing)
 - [Endpoints](#endpoints)
 - [Storing Session](#storing-session)
+- [Configuring CORS](#configuring-cors)
 - [Testing](#testing)
 - [File Structure](#file-structure)
 - [Deployment](#deployment)
@@ -593,6 +594,30 @@ const logoutController = (req: Request, res: Response, next: NextFunction) => {
 **Session Management**: After a user logs in, Passport automatically handles the session management using serializeUser and deserializeUser. On subsequent requests (like `GET /auth`), Passport checks the session, retrieves the full user object, and attaches it to `req.user`.
 
 **Logout**: When the user makes a POST request to `/auth/logout`, logoutController ensures that their session is properly destroyed using `req.logOut`, and the session cookie is cleared.
+
+## Configuring CORS
+
+#### What is CORS?
+
+Cross-Origin Resource Sharing (CORS) is a security feature in web browsers that restricts web pages from making requests to a different domain than the one that served the page. This policy prevents unauthorized requests between origins, protecting users and servers. When APIs or resources need to be accessed across different domains, CORS allows servers to specify permitted domains, request methods, and headers to control cross-origin requests.
+
+#### Using the cors Package in a Backend Server
+
+The cors package in Node.js simplifies handling CORS in backend applications. By adding it to an Express server, you can specify which domains are allowed to access the API, as well as permitted methods (GET, POST, etc.) and headers.
+
+```js
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+    credentials: true,
+    methods: ["GET", "POST"],
+  })
+);
+```
+
+This app.use statement configures CORS in the Express app, allowing cross-origin requests only from the origin specified by process.env.ORIGIN. It enables credentials to be sent with requests (such as cookies or authentication headers) and restricts the allowed HTTP methods to GET and POST, enhancing security by controlling which requests can be made to the server. Currently, it is applied to all routes, it can be configured and applied as middleware to specific routes in the `routes` folder.
+
+This approach also eliminates the need for the frontend to configure a proxy for local server connections. For deployment, make sure you include the url of the frontend as an environment variable to allow it to make requests to the server if it is deployed seperately.
 
 ## Testing
 
