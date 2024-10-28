@@ -11,6 +11,7 @@ A brief description of your project.
 - [Committing](#committing)
 - [Endpoints](#endpoints)
 - [Storing Session](#storing-session)
+- [Configuring CORS](#configuring-cors)
 - [Testing](#testing)
 - [File Structure](#file-structure)
 - [Deployment](#deployment)
@@ -435,7 +436,7 @@ session({
 
 - **httpOnly**: This setting ensures that the cookie cannot be accessed through client-side JavaScript. It's a security feature to prevent certain attacks, such as XSS (Cross-Site Scripting).
 
-Next, below is an example of how cookies is used in this project. Cookies allow you to store small pieces of data in the user's browser, which can be used for session management or other purposes. 
+Next, below is an example of how cookies is used in this project. Cookies allow you to store small pieces of data in the user's browser, which can be used for session management or other purposes.
 
 From the cookieRoutes file:
 
@@ -448,6 +449,7 @@ router.get("/cookies", (req, res) => {
   res.send({ message: "Hello" });
 });
 ```
+
 - `res.cookie("hello", "world", { maxAge: 600000, signed: true });` sets the signed cookie. This set the signed cookie that expires in 10mins. Signing the cookie prevents it from being tampered with on client-side.
 - `console.log(req.session); and console.log(req.session.id);` log the session object and session ID, which can be useful for session-based cookie tracking.
 - The `req.session.visited = true`; line (currently commented) would store a custom session property indicating that the user has visited the page.
@@ -459,6 +461,7 @@ To authenticate the user, we used bcrypt.js for secure password comparison and p
 
 Starting with our strategy and configuring passport:
 In order to authenticate users, we configured a LocalStrategy using Passport. This strategy allows us to authenticate users based on their email and password, which are passed in during login.
+
 - **usernameField**: We configure the LocalStrategy to use the `email` field instead of the default `username` field. This is done by setting `usernameField: "email"`.
 
 #### Password Validation with bcrypt:
@@ -478,8 +481,7 @@ Once the user is authenticated, Passport needs to store user information in the 
 ##### How It Works:
 
 - **`serializeUser`** is responsible for determining what part of the user object should be serialized (i.e., stored) in the session. In our case, we chose to store the user's email.
-- **Why Email?** By storing the email, we're able to use it to pass into the `getStudentByEmail` function to get student information to authtenticate the user.
--**The Session ID**: Passport doesn't store the entire user object in the session, just the piece of information we specify (in this case, the user's email). This email is used to identify the user in future requests. The session itself is identified by a session ID that is stored in the cookie, which is sent back and forth between the server and the client.
+- **Why Email?** By storing the email, we're able to use it to pass into the `getStudentByEmail` function to get student information to authtenticate the user. -**The Session ID**: Passport doesn't store the entire user object in the session, just the piece of information we specify (in this case, the user's email). This email is used to identify the user in future requests. The session itself is identified by a session ID that is stored in the cookie, which is sent back and forth between the server and the client.
 
 #### Deserializing:
 
@@ -488,14 +490,16 @@ After the user's email is serialized into the session, Passport needs to retriev
 ##### How It Works
 
 1. Fetching the User:
-    - Passport uses the email stored in the session to look up the user in the database. The function `getStudentByEmail(email)` is called to retrieve the full user details.
+
+   - Passport uses the email stored in the session to look up the user in the database. The function `getStudentByEmail(email)` is called to retrieve the full user details.
 
 2. Restoring the User:
-    - Once the user is found in the database, their full details (like id, email, and name) are packaged into an object and passed to the done function. This object is then attached to `req.user`, allowing it to be accessed throughout the request lifecycle.
+
+   - Once the user is found in the database, their full details (like id, email, and name) are packaged into an object and passed to the done function. This object is then attached to `req.user`, allowing it to be accessed throughout the request lifecycle.
 
 3. Error Handling:
-    - If the user cannot be found (e.g., the email does not exist), an error is thrown, and done is called with null, meaning no user will be attached to the request.
-    Similarly, if there is any other error during the lookup (e.g., database connection failure), the error is passed to done, and the deserialization fails.
+   - If the user cannot be found (e.g., the email does not exist), an error is thrown, and done is called with null, meaning no user will be attached to the request.
+     Similarly, if there is any other error during the lookup (e.g., database connection failure), the error is passed to done, and the deserialization fails.
 
 **`deserializeUser`** ensures that on each request, the user's full information is restored from the session store. This makes it possible to perform actions that depend on the user being authenticated, like checking req.user for user-specific data. This method plays a crucial role in maintaining user sessions across multiple requests.
 
@@ -504,11 +508,13 @@ After the user's email is serialized into the session, Passport needs to retriev
 In our application, Passport handles user authentication through middleware, and we use custom controllers to manage responses for login, authentication status, and logout. Below is the complete setup, showing how Passport integrates with the routes and controllers:
 
 #### Login Controller
+
 ```
 router.get("/auth", authController);
 router.post("/auth/login", passport.authenticate("local"), loginController);
 router.post("/auth/logout", logoutController);
 ```
+
 ```
 const loginController = (req: Request, res: Response) => {
   if (req.user) {
@@ -520,9 +526,10 @@ const loginController = (req: Request, res: Response) => {
   return;
 };
 ```
+
 - Purpose: After Passport's passport.authenticate("local") middleware successfully authenticates a user, control is passed to the loginController. This controller sends the authenticated user’s information back as a JSON response.
 - Response: If the login is successful (req.user exists), the controller responds with a 200 OK status and the user's details (such as their ID, email, and name).
-If something goes wrong, it returns a 500 Internal Server Error with an error message.
+  If something goes wrong, it returns a 500 Internal Server Error with an error message.
 
 ```
 const authController = (req: Request, res: Response, next: Function) => {
@@ -534,6 +541,7 @@ const authController = (req: Request, res: Response, next: Function) => {
   return;
 };
 ```
+
 #### Authentication Status Controller
 
 ```
@@ -546,11 +554,12 @@ const authController = (req: Request, res: Response, next: Function) => {
   return;
 };
 ```
+
 - Purpose: This controller checks whether the user is authenticated by inspecting req.user, which is populated by Passport through deserializeUser.
-Response:
+  Response:
 
 - If the user is authenticated (req.user exists), it returns a 200 OK status and a confirmation message.
-If the user is not authenticated (req.user is undefined), it returns a 401 Unauthorized status.
+  If the user is not authenticated (req.user is undefined), it returns a 401 Unauthorized status.
 
 #### Logout Controller
 
@@ -574,6 +583,7 @@ const logoutController = (req: Request, res: Response, next: NextFunction) => {
   return;
 };
 ```
+
 - **Purpose**: This controller handles logging out the user and destroying their session. It uses Passport’s req.logOut method to remove the session and clear the user's authentication state.
 - **Response**: If the user is not logged in (`req.user` is undefined), it returns a 401 Unauthorized status. If the user is logged in, req.logOut is called to log them out and clear the session cookie (connect.sid). On success, it returns a 200 OK status and a message confirming that the user has logged out.
 
@@ -584,6 +594,30 @@ const logoutController = (req: Request, res: Response, next: NextFunction) => {
 **Session Management**: After a user logs in, Passport automatically handles the session management using serializeUser and deserializeUser. On subsequent requests (like `GET /auth`), Passport checks the session, retrieves the full user object, and attaches it to `req.user`.
 
 **Logout**: When the user makes a POST request to `/auth/logout`, logoutController ensures that their session is properly destroyed using `req.logOut`, and the session cookie is cleared.
+
+## Configuring CORS
+
+#### What is CORS?
+
+Cross-Origin Resource Sharing (CORS) is a security feature in web browsers that restricts web pages from making requests to a different domain than the one that served the page. This policy prevents unauthorized requests between origins, protecting users and servers. When APIs or resources need to be accessed across different domains, CORS allows servers to specify permitted domains, request methods, and headers to control cross-origin requests.
+
+#### Using the cors Package in a Backend Server
+
+The cors package in Node.js simplifies handling CORS in backend applications. By adding it to an Express server, you can specify which domains are allowed to access the API, as well as permitted methods (GET, POST, etc.) and headers.
+
+```js
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+    credentials: true,
+    methods: ["GET", "POST"],
+  })
+);
+```
+
+This app.use statement configures CORS in the Express app, allowing cross-origin requests only from the origin specified by process.env.ORIGIN. It enables credentials to be sent with requests (such as cookies or authentication headers) and restricts the allowed HTTP methods to GET and POST, enhancing security by controlling which requests can be made to the server. Currently, it is applied to all routes, it can be configured and applied as middleware to specific routes in the `routes` folder.
+
+This approach also eliminates the need for the frontend to configure a proxy for local server connections. For deployment, make sure you include the url of the frontend as an environment variable to allow it to make requests to the server if it is deployed seperately.
 
 ## Testing
 
@@ -670,12 +704,12 @@ For environment variables, specify `PORT` and the port number for accessing the 
 
 #### NPM Scripts
 
-| Name    | Command                                                | Description                                                                                                                                                 |
-| ------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| build   | npm install && npx tsc && node ./dist/database/seed.js | Installs project depenecies, compile typescript files and seed the database with data.                                                                      |
-| compile | npx tsc                                                | Compile `.ts` files from `src` to the `dist` folder.                                                                                                        |
-| seed    | npx tsc && node ./dist/database/seed.js                | Compile `.ts` files and runs `seed.js` to create and seed the database.                                                                                     |
-| server  | npx tsx watch ./src/server.ts                          | Run server locally using `server.ts`. Observe and restart the server whenever changes are saved.                                                            |
-| start   | node dist/server.js                                    | Run server locally using `server.js`                                                                                                                        |
-| runfile | npx nodemon --exec tsx                                 | Runs nodemon, which automatically restarts the application when files change, and uses tsx to execute the TypeScript files without needing to compile them. |
-| test    | tsx node\*modules/.bin/mocha 'src/testing/\*\*/\_.ts'  | Run all TypeScript test files in the src/testing directory using Mocha with tsx to handle TypeScript execution without compilation.                         |
+| Name     | Command                                                    | Description                                                                                                                                                                                                             |
+| -------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| build    | npm install && npx tsc && node ./dist/database/seed.js     | Installs project depenecies, compile typescript files and seed the database with data.                                                                                                                                  |
+| seed     | npx tsc && node ./dist/database/seed.js                    | Compile `.ts` files and runs `seed.js` to create and seed the database.                                                                                                                                                 |
+| seedtest | npx tsc && DB_TYPE=test node ./dist/database/seed.js       | Compile typscript, assign test to DB_TYPE and run the seed function to fill a test database.                                                                                                                            |
+| server   | ORIGIN=http://localhost:5173 npx tsx watch ./src/server.ts | Run server locally using `server.ts` and set origin to localhost 5173 to connect frontend to the backend server locally witout proxy config on the frontend. Observe and restart the server whenever changes are saved. |
+| start    | node dist/server.js                                        | Run server locally using `server.js`                                                                                                                                                                                    |
+| runfile  | npx nodemon --exec tsx                                     | Runs nodemon, which automatically restarts the application when files change, and uses tsx to execute the TypeScript files without needing to compile them.                                                             |
+| test     | tsx node\*modules/.bin/mocha 'src/testing/\*\*/\_.ts'      | Run all TypeScript test files in the src/testing directory using Mocha with tsx to handle TypeScript execution without compilation.                                                                                     |

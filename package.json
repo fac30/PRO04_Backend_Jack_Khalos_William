@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "test": "DB_TYPE=test tsx node_modules/.bin/mocha 'src/testing/**/*.ts'",
-    "prepare": "husky",
     "build": "npm install && npx tsc && node ./dist/database/seed.js",
     "start": "node dist/server.js",
     "server": "ORIGIN=http://localhost:5173 tsx watch ./src/server.ts",
