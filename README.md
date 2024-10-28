@@ -9,9 +9,10 @@ A brief description of your project.
 - [Branches](#branches)
 - [Running Server](#server)
 - [Committing](#committing)
+- [Endpoints](#endpoints)
+- [Storing Session](#storing-session)
 - [Testing](#testing)
 - [File Structure](#file-structure)
-- [Endpoints](#endpoints)
 - [Deployment](#deployment)
 - [Index](#index)
 
@@ -213,8 +214,8 @@ To keep the codebase organized and ensure clear understanding, we follow these b
 
 ### Log in
 
-- Endpoint: POST /login
-- Example request: `http://localhost:3000/login`
+- Endpoint: POST /auth/login
+- Example request: `http://localhost:3000/auth/login`
 - Description: Authenticates login using provided password
 - Parameters:
   - Body: JSON object
@@ -234,13 +235,9 @@ Example request body:
 
 ```json
 {
-  "message": "Login successful",
-  "user": {
-    "id": 3,
-    "full_name": "Khalos",
-    "email": "khalos@zubi.com",
-    "password_hash": "$21p0$jansdfj&&hbnsaf.YbghROGGZLpksTfgUJ2KXH.3meh4sTO"
-  }
+  "id": 3,
+  "full_name": "Khalos",
+  "email": "khalos@zubi.com"
 }
 ```
 
@@ -252,36 +249,43 @@ Example request body:
 }
 ```
 
+### Log out
+
+- Endpoint: POST /auth/logout
+- Example request: `http://localhost:3000/auth/logout`
+- Description: Checks user is logged in and logs the user out by clearing session on the server.
+- Parameters:
+  - Body: JSON object
+
+Example request body:
+
+```json
+{
+  "username": "khalos@zubi.com",
+  "password": "jj"
+}
+```
+
 ### **AUTHENTICATION ENDPOINTS**
 
 ### Check Authentication
 
-- Endpoint: GET /login/check-auth
-- Example request: `http://localhost:3000/login/check-auth`
-- Description: Checks if user has previously logged in, using cookies stored in the browser or Postman/Insomnia
+- Endpoint: GET /auth
+- Example request: `http://localhost:3000/auth`
+- Description: Checks if the user is logged in by using user cookie and session data.
 
 #### Example responses:
 
 - If authenticated:
 
 ```json
-{
-  "authenticated": true,
-  "user": {
-    "id": 3,
-    "full_name": "Khalos",
-    "email": "khalos@zubi.com",
-    "password_hash": "$2b$10$324312123.asdfasdfahsdfhsannn.3meh4sTO"
-  }
-}
+{ "message": "You are logged in" }
 ```
 
 - If not
 
 ```json
-{
-  "message": "Not authenticated"
-}
+{ "message": "You are not logged in" }
 ```
 
 ### **SLOTS AND SESSIONS ENDPOINTS**
@@ -406,6 +410,180 @@ Example body:
   "message": "Error: No sessions found, does this tutor exist?"
 }
 ```
+
+## Storing Session
+
+In this section, we will explain how to configure cookie settings when using express-session in an Express application.
+
+```
+session({
+    secret: "zubiSecretKey", // Used to sign the session ID cookie
+    resave: false, // Prevents session being saved back to the store if it was not modified
+    saveUninitialized: false, // Ensures sessions are only saved if they are new and not modified
+    cookie: {
+      secure: false, // Set to `true` if using HTTPS for ensuring cookie is only sent over HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // The lifetime of the cookie in milliseconds (1 day in this case)
+      sameSite: "strict", // Ensures that the cookie is not sent along with requests initiated by third-party websites
+      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie (for security purposes)
+```
+
+- **secure**: Set this to true when serving the application over HTTPS. This ensures that the cookie is only sent over secure connections, protecting it from being intercepted during transmission.
+
+- **maxAge**: Defines how long the cookie should last before it expires. In this case, it's set to 24 _ 60 _ 60 \* 1000 milliseconds, which equals one day. After the cookie expires, the user will be logged out automatically.
+
+- **sameSite**: Controls whether the browser should send the cookie along with cross-site requests. Setting it to "strict" means the cookie will only be sent for requests that originate from the same site. This provides protection against CSRF (Cross-Site Request Forgery) attacks.
+
+- **httpOnly**: This setting ensures that the cookie cannot be accessed through client-side JavaScript. It's a security feature to prevent certain attacks, such as XSS (Cross-Site Scripting).
+
+Next, below is an example of how cookies is used in this project. Cookies allow you to store small pieces of data in the user's browser, which can be used for session management or other purposes. 
+
+From the cookieRoutes file:
+
+```
+router.get("/cookies", (req, res) => {
+  res.cookie("hello", "world", { maxAge: 600000, signed: true });
+  console.log(req.session);
+  console.log(req.session.id);
+  //req.session.visited = true;
+  res.send({ message: "Hello" });
+});
+```
+- `res.cookie("hello", "world", { maxAge: 600000, signed: true });` sets the signed cookie. This set the signed cookie that expires in 10mins. Signing the cookie prevents it from being tampered with on client-side.
+- `console.log(req.session); and console.log(req.session.id);` log the session object and session ID, which can be useful for session-based cookie tracking.
+- The `req.session.visited = true`; line (currently commented) would store a custom session property indicating that the user has visited the page.
+- You can test these routes on your browser or with your chosen HTTP testing app.
+
+### Creating User Session
+
+To authenticate the user, we used bcrypt.js for secure password comparison and passport.js to handle the authentication process and manage user sessions in our Express application.
+
+Starting with our strategy and configuring passport:
+In order to authenticate users, we configured a LocalStrategy using Passport. This strategy allows us to authenticate users based on their email and password, which are passed in during login.
+- **usernameField**: We configure the LocalStrategy to use the `email` field instead of the default `username` field. This is done by setting `usernameField: "email"`.
+
+#### Password Validation with bcrypt:
+
+The user's email is used to fetch their details from the database using `getStudentByEmail(email)`.
+Once the user is found, we compare the submitted password with the stored hashed password using `bcrypt.compare`. This ensures that the user's credentials are securely validated without exposing the password.
+If the password matches, we create a `foundUser` object containing the user's ID, email, and name and pass it to the done callback, signaling successful authentication.
+
+##### Error Handling:
+
+If the user is not found or the password is incorrect, an error is thrown, and the done function is called with false to indicate an authentication failure.
+
+##### Serializing:
+
+Once the user is authenticated, Passport needs to store user information in the session. This is where `serializeUser` comes into play. Its job is to decide what data should be stored in the session to identify the user in subsequent requests.
+
+##### How It Works:
+
+- **`serializeUser`** is responsible for determining what part of the user object should be serialized (i.e., stored) in the session. In our case, we chose to store the user's email.
+- **Why Email?** By storing the email, we're able to use it to pass into the `getStudentByEmail` function to get student information to authtenticate the user.
+-**The Session ID**: Passport doesn't store the entire user object in the session, just the piece of information we specify (in this case, the user's email). This email is used to identify the user in future requests. The session itself is identified by a session ID that is stored in the cookie, which is sent back and forth between the server and the client.
+
+#### Deserializing:
+
+After the user's email is serialized into the session, Passport needs to retrieve the full user information on each request. This is where deserializeUser comes in. It takes the serialized data (in this case, the user's email) and uses it to fetch the user from the database, restoring the full user object for use in our website.
+
+##### How It Works
+
+1. Fetching the User:
+    - Passport uses the email stored in the session to look up the user in the database. The function `getStudentByEmail(email)` is called to retrieve the full user details.
+
+2. Restoring the User:
+    - Once the user is found in the database, their full details (like id, email, and name) are packaged into an object and passed to the done function. This object is then attached to `req.user`, allowing it to be accessed throughout the request lifecycle.
+
+3. Error Handling:
+    - If the user cannot be found (e.g., the email does not exist), an error is thrown, and done is called with null, meaning no user will be attached to the request.
+    Similarly, if there is any other error during the lookup (e.g., database connection failure), the error is passed to done, and the deserialization fails.
+
+**`deserializeUser`** ensures that on each request, the user's full information is restored from the session store. This makes it possible to perform actions that depend on the user being authenticated, like checking req.user for user-specific data. This method plays a crucial role in maintaining user sessions across multiple requests.
+
+### Using Passport with Middleware and Controllers
+
+In our application, Passport handles user authentication through middleware, and we use custom controllers to manage responses for login, authentication status, and logout. Below is the complete setup, showing how Passport integrates with the routes and controllers:
+
+#### Login Controller
+```
+router.get("/auth", authController);
+router.post("/auth/login", passport.authenticate("local"), loginController);
+router.post("/auth/logout", logoutController);
+```
+```
+const loginController = (req: Request, res: Response) => {
+  if (req.user) {
+    res.status(200).json({ ...req.user });
+  } else {
+    res.status(500).json({ message: "There was an error logging in." });
+  }
+
+  return;
+};
+```
+- Purpose: After Passport's passport.authenticate("local") middleware successfully authenticates a user, control is passed to the loginController. This controller sends the authenticated user’s information back as a JSON response.
+- Response: If the login is successful (req.user exists), the controller responds with a 200 OK status and the user's details (such as their ID, email, and name).
+If something goes wrong, it returns a 500 Internal Server Error with an error message.
+
+```
+const authController = (req: Request, res: Response, next: Function) => {
+  if (req.user) {
+    res.status(200).json({ message: "You are logged in" });
+  } else {
+    res.status(401).json({ message: "You are not logged in" });
+  }
+  return;
+};
+```
+#### Authentication Status Controller
+
+```
+const authController = (req: Request, res: Response, next: Function) => {
+  if (req.user) {
+    res.status(200).json({ message: "You are logged in" });
+  } else {
+    res.status(401).json({ message: "You are not logged in" });
+  }
+  return;
+};
+```
+- Purpose: This controller checks whether the user is authenticated by inspecting req.user, which is populated by Passport through deserializeUser.
+Response:
+
+- If the user is authenticated (req.user exists), it returns a 200 OK status and a confirmation message.
+If the user is not authenticated (req.user is undefined), it returns a 401 Unauthorized status.
+
+#### Logout Controller
+
+```
+const logoutController = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    res.status(401).json({ message: "You are not logged in." });
+    return;
+  } else {
+    req.logOut((err) => {
+      if (err) {
+        res.status(400).json({ message: "There was an error logging out." });
+        return;
+      }
+      res
+        .status(200)
+        .clearCookie("connect.sid") // Clears the session cookie
+        .json({ message: "You have successfully logged out." });
+    });
+  }
+  return;
+};
+```
+- **Purpose**: This controller handles logging out the user and destroying their session. It uses Passport’s req.logOut method to remove the session and clear the user's authentication state.
+- **Response**: If the user is not logged in (`req.user` is undefined), it returns a 401 Unauthorized status. If the user is logged in, req.logOut is called to log them out and clear the session cookie (connect.sid). On success, it returns a 200 OK status and a message confirming that the user has logged out.
+
+#### Passport Middleware in Action
+
+**Login**: When a POST request is made to `/auth/login`, Passport’s passport.authenticate("local") middleware checks the user’s email and password. If the credentials are valid, Passport creates a session for the user and forwards the request to loginController, which sends back the authenticated user’s details.
+
+**Session Management**: After a user logs in, Passport automatically handles the session management using serializeUser and deserializeUser. On subsequent requests (like `GET /auth`), Passport checks the session, retrieves the full user object, and attaches it to `req.user`.
+
+**Logout**: When the user makes a POST request to `/auth/logout`, logoutController ensures that their session is properly destroyed using `req.logOut`, and the session cookie is cleared.
 
 ## Testing
 
