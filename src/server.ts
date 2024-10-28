@@ -5,6 +5,7 @@ import passport from "passport";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import "./auth/strategy.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -28,6 +29,13 @@ app.use(express.json());
 app.use(cookieParser("zubiSecretKey"));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+    credentials: true,
+    methods: ["GET", "POST"],
+  })
+);
 
 const port = process.env.PORT || 3000;
 

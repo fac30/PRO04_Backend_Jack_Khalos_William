@@ -8,7 +8,7 @@
     "prepare": "husky",
     "build": "npm install && npx tsc && node ./dist/database/seed.js",
     "start": "node dist/server.js",
-    "server": "npx tsx watch ./src/server.ts",
+    "server": "ORIGIN=http://localhost:5173 tsx watch ./src/server.ts",
     "seed": "npx tsc && node ./dist/database/seed.js",
     "seedtest": "npx tsc && DB_TYPE=test node ./dist/database/seed.js",
     "runfile": "npx nodemon --exec tsx"
@@ -23,6 +23,8 @@
     "@types/bcrypt": "^5.0.2",
     "@types/better-sqlite3": "^7.6.11",
     "@types/chai": "^5.0.0",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.0",
     "@types/mocha": "^10.0.9",
@@ -41,10 +43,10 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@types/cookie-parser": "^1.4.7",
     "bcrypt": "^5.1.1",
     "better-sqlite3": "^11.3.0",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
