@@ -3,7 +3,7 @@ import {
   createTutorAvailabilityController,
   bookSessionController,
   getSessionsByTutorIdController,
-} from "../controllers/sessionsControllers";
+} from "../controllers/sessionsControllers.js";
 
 const router = Router();
 

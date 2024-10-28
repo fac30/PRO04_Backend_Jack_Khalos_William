@@ -1,4 +1,4 @@
-import zubiDB from "../database/db";
+import zubiDB from "../database/db.js";
 
 const insertSession = zubiDB.prepare(/*SQL*/ `
     INSERT INTO sessions (start, "end", booking_status, fk_student_id, fk_tutor_id)
