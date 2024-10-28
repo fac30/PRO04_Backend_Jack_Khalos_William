@@ -1,7 +1,7 @@
 import {
   getAllSubjectsController,
   getSubjectbyIdController,
-} from "../controllers/subjectsControllers";
+} from "../controllers/subjectsControllers.js";
 import { Router } from "express";
 
 const router = Router();
