@@ -1,4 +1,4 @@
-import zubiDB from "../database/db";
+import zubiDB from "../database/db.js";
 
 export interface User {
   id: number;
