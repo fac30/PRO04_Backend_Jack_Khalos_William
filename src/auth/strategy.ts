@@ -1,7 +1,7 @@
 import passport, { use } from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
-import getStudentByEmail from "../models/getPassword";
+import getStudentByEmail from "../models/getPassword.js";
 
 declare global {
   namespace Express {
